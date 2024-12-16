@@ -20,5 +20,5 @@ modules = {
     ];
   };
 in {
-  darwinConfiguration.${hostname} = mkDarwinConfig  modules // { inherit system hostname; };
+  darwinConfiguration.${hostname} = mkDarwinConfig  (modules // { inherit system hostname; });
 }

@@ -53,7 +53,7 @@
     ];
 
     # `brew install`
-    brew = [
+    brews = [
         "bottom" # alternative top -- btm
         "cmake"
         "conan"
@@ -67,8 +67,8 @@
         "git-lfs"
         "gnu-tar"
         "gnutls"
-        "go"
         "helix"
+        "just"
         "lazygit"
         "lrzsz"
         "lsd"

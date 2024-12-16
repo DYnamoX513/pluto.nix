@@ -18,10 +18,10 @@
 
       "https://cache.nixos.org"
     ];
-    trusted-public-keys = [
+    # trusted-public-keys = [
       # the default public key of cache.nixos.org, it's built-in, no need to add it here
       # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    ];
+    # ];
   };
 
   # This is the standard format for flake.nix. `inputs` are the dependencies of the flake,
@@ -82,7 +82,7 @@
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
 
-    username = import ./check-user.nix { username = "pluto"; };
+    username = "pluto";
     userfullname = "Yuxin Duan";
     useremail = "yd2614@columbia.edu";
 
@@ -97,11 +97,13 @@
     extra-modules ? [],
                 home-modules ? [],
     }: nix-darwin.lib.darwinSystem {
-      inherit system specialArgs;
+      inherit system;
+                    specialArgs = specialArgs // {inherit hostname;};
       modules = [
-        ./modules/system.nix
-        ./modules/nix-core.nix
         ./modules/brew.nix
+        ./modules/host-users.nix
+        ./modules/nix-core.nix
+        ./modules/system.nix
 
       ] ++ extra-modules ++ [
 
@@ -142,10 +144,11 @@ scanPaths = path:
         )
         (builtins.readDir path)));
     # import all defined hosts
-     hosts = map (f: import (./hosts + "${f}")) builtins.attrNames( builtins.readDir ./hosts);
+     hosts = map (f: import f specialArgs) (scanPaths ./hosts);
   in {
-    # 动态生成 darwinConfigurations
-    darwinConfigurations = nixpkgs.lib.attrsets.mergeAttrsList map (c: c.darwinConfiguration or {}) hosts;
+
+    # generates darwinConfigurations
+    darwinConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (map (c: c.darwinConfiguration or {}) hosts);
 
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'

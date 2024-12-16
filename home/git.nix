@@ -43,6 +43,7 @@
         line-numbers = true;
         true-color = "always";
             };
+        };
 
     # delta = {
     #   enable = true;
