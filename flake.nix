@@ -120,6 +120,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+                                    # backup existing config files
+home-manager.backupFileExtension = "hm-backup";
 
             home-manager.extraSpecialArgs = specialArgs;
             home-manager.users."${username}".imports = home-modules;
