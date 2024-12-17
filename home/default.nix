@@ -24,35 +24,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-    programs.fish = {
-enable = true;
-        functions = {
-yy = {
-body = ''
-        set tmp (mktemp -t "yazi-cwd.XXXXXX")
-        yazi $argv --cwd-file="$tmp"
-        if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-            builtin cd -- "$cwd"
-        end
-        rm -f -- "$tmp"
-            '';
-        };
-            java8 = {
-body = ''
-    set -gx JAVA_HOME (/usr/libexec/java_home -v 1.8)
-    echo "JAVA_HOME set to $JAVA_HOME"
-    java -version
-                '';
-            };
-            unset_java = {
-body = ''
-    set -e JAVA_HOME
-    echo "JAVA_HOME has been unset"
-            '';
-            };
-        };
-    };
-
     programs.fzf = {
         enable = true;
 

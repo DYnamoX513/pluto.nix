@@ -17,6 +17,7 @@ modules = {
     home-modules = [
             # ./home-specifix.nix
             ../../home
+            ./brew-only.nix
     ];
   };
 in {

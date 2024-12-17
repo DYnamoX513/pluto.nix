@@ -73,7 +73,6 @@
         "lazygit"
         "lrzsz"
         "lsd"
-        "luajit"
         "neovim"
         "oath-toolkit" # oath cli
         "python3"
