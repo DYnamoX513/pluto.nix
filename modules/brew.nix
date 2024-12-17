@@ -12,12 +12,13 @@
   # But on macOS, it's less stable than homebrew.
   #
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
-  # environment.systemPackages = with pkgs; [
-  #   neovim
-  #   git
-  #   just # use Justfile to simplify nix-darwin's commands 
-  # ];
-  # environment.variables.EDITOR = "nvim";
+  environment.systemPackages = with pkgs; [
+    neovim
+    git
+    just # use Justfile to simplify nix-darwin's commands 
+  ];
+
+  environment.variables.EDITOR = "nvim";
 
   # WARN: To make this work, homebrew need to be installed manually, see https://brew.sh
   # 
@@ -92,8 +93,8 @@
 "openinterminal" # for Finder
 "raycast" # (HotKey: alt/option + space)search, caculate and run scripts(with many plugins)
 "stats" # beautiful system monitor
-"vivaldi" # Vivaldi browser
-"wezterm@nightly"
+# "vivaldi" # Vivaldi browser
+"wezterm@nightly" # need manually update through 'brew update wezterm@nightly'
 
             # fonts
 "font-blex-mono-nerd-font"
