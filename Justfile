@@ -20,18 +20,24 @@ update-hostname:
 #  TODO Feel free to remove this target if you don't need a proxy to speed up the build process
 [group('desktop')]
 darwin-set-proxy:
-    # sudo python3 scripts/darwin_set_proxy.py
+    sudo python3 ./darwin_set_proxy.py set
+    sleep 1
+
+[group('desktop')]
+darwin-unset-proxy:
+    sudo python3 ./darwin_set_proxy.py unset
+    sleep 1
 
 # nix build & darwin-rebuild switch
 [group('desktop')]
-darwin: darwin-set-proxy
+darwin: # darwin-set-proxy
   nix build .#darwinConfigurations.{{hostname}}.system \
     --extra-experimental-features 'nix-command flakes'
 
   ./result/sw/bin/darwin-rebuild switch --flake .#{{hostname}}
 
 [group('desktop')]
-darwin-debug: darwin-set-proxy
+darwin-debug: # darwin-set-proxy
   nix build .#darwinConfigurations.{{hostname}}.system --show-trace --verbose \
     --extra-experimental-features 'nix-command flakes'
 
