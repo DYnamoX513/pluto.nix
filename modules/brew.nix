@@ -18,6 +18,7 @@
     just # use Justfile to simplify nix-darwin's commands 
   ];
 
+    # in global environment
   environment.variables.EDITOR = "nvim";
 
   # WARN: To make this work, homebrew need to be installed manually, see https://brew.sh
