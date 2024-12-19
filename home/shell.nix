@@ -55,20 +55,20 @@ source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
 
     # ~/Library/Application\ Support/JetBrains/Toolbox/scripts/... E.g., clion
 
-    # language - English
-    lang = shell: 
-    if shell == "fish" then
-        ''
-    set -gx LANG en_US.UTF-8
-    set -gx LC_CTYPE en_US.UTF-8
-    set -gx LC_ALL en_US.UTF-8
-    ''
-    else 
-        ''
- export LANG="en_US.UTF-8"
- export LC_CTYPE="en_US.UTF-8"
- export LC_ALL="en_US.UTF-8"
-        '';
+ #    # language - English
+ #    lang = shell: 
+ #    if shell == "fish" then
+ #        ''
+ #    set -gx LANG en_US.UTF-8
+ #    set -gx LC_CTYPE en_US.UTF-8
+ #    set -gx LC_ALL en_US.UTF-8
+ #    ''
+ #    else 
+ #        ''
+ # export LANG="en_US.UTF-8"
+ # export LC_CTYPE="en_US.UTF-8"
+ # export LC_ALL="en_US.UTF-8"
+ #        '';
 
     # wezterm completion
     wezterm = shell: ''eval "$(wezterm shell-completion --shell ${shell})"'';
@@ -79,7 +79,7 @@ source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
 (orbstack shell)
             (cargo shell)
             (homebrew shell)
-            (lang shell)
+            # (lang shell)
         ];
     commonInteractive = shell:
         [

@@ -1,0 +1,3 @@
+[submodule "share/nvim"]
+	path = share/nvim
+	url = git@github.com:DYnamoX513/NvChad-starter.git
