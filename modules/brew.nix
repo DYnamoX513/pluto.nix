@@ -82,6 +82,7 @@
         "neovim"
         "oath-toolkit" # oath cli
         "python3"
+        "rbenv"
         "ripgrep"
         "starship"
         "trzsz-ssh" # Simple ssh client with trzsz

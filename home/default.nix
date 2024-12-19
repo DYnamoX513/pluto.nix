@@ -31,6 +31,12 @@
     enableZshIntegration = true;
 
 };
+    programs.rbenv = {
+        enable = true;
+
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+    };
 
     programs.fzf = {
         enable = true;
