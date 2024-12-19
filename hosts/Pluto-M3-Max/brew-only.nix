@@ -1,8 +1,8 @@
 { config, lib, ... }:
 # use homebrew exclusively on Darwin
 let
-  # brew packages
-  homebrewPackages = config.homebrew.brews;
+  # brew and cask packages
+  homebrewPackages = config.homebrew.brews ++ config.homebrew.casks;
 
 # extra mappings brew -> HM
   hmToBrewPackages = {
