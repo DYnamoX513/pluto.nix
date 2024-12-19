@@ -79,11 +79,9 @@ source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
 (orbstack shell)
             (cargo shell)
             (homebrew shell)
-            # (lang shell)
         ];
     commonInteractive = shell:
         [
-            (wezterm shell)
         ]
         ;
 
@@ -133,6 +131,7 @@ interactiveShellInit =
          lib.strings.concatLines 
             commonInteractive "fish" ++ [
                 condaFish
+                (wezterm "fish") # no enableFishIntegration for wezterm (24.11)
         ];
         functions = {
             # yazi change cwd

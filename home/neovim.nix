@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  pkgs-unstable,
   ...
 }:
 # Use customized NvChad-starter
@@ -22,7 +21,7 @@ in {
       vimdiffAlias = true;
 
       # We use brew's neovim on Darwin, configs below are unnecessary
-      package = pkgs-unstable.neovim-unwrapped;
+      package = pkgs.neovim-unwrapped;
 
       # These environment variables are needed to build and run binaries
       # with external package managers like mason.nvim.

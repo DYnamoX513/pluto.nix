@@ -6,7 +6,8 @@ let
 
 # extra mappings brew -> HM
   hmToBrewPackages = {
-    # "fish" = "fish";
+    "wezterm" = "wezterm";
+    "wezterm@nightly" = "wezterm";
   };
 
     # set each HM program's package to null
