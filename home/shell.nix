@@ -1,4 +1,4 @@
-{config, lib,pkgs,...}:
+{config,osConfig,lib,pkgs,...}:
 let 
     # miniconda initialize
     condaDir = "${config.home.homeDirectory}/miniconda3";
@@ -51,7 +51,7 @@ source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
     '';
 
     # homebrew
-    homebrew = shell: ''eval "$(${config.homebrew.brewPrefix}/brew shellenv ${shell})"'';
+    homebrew = shell: ''eval "$(${osConfig.homebrew.brewPrefix}/brew shellenv ${shell})"'';
 
     # neovim mason installed binaries 
     mason = shell:
@@ -101,7 +101,6 @@ source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
     # fancy fish greeting
 in
 {
-
     programs.zsh = {
         enable = true;
         # instead, use zsh-autocompletion https://github.com/marlonrichert/zsh-autocomplete
@@ -130,22 +129,22 @@ theme = "robbyrussell";
   }
 
 ];
-profileExtra = lib.strings.concatLines commonLogin "zsh";
-        initExtra = lib.strings.concatLines 
+profileExtra = lib.strings.concatLines (commonLogin "zsh");
+        initExtra = lib.strings.concatLines (
             commonInteractive "zsh" ++ [
             condaZsh
-        ];
+        ]);
     };
 
     programs.fish = {
 enable = true;
-loginShellInit = lib.strings.concatLines commonLogin "fish";
+loginShellInit = lib.strings.concatLines (commonLogin "fish");
 interactiveShellInit = 
-         lib.strings.concatLines 
+         lib.strings.concatLines (
             commonInteractive "fish" ++ [
                 condaFish
                 (wezterm "fish") # no enableFishIntegration for wezterm (24.11)
-        ];
+        ]);
         functions = {
             # yazi change cwd
 # yy = {

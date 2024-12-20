@@ -17,6 +17,7 @@ modules = {
     home-modules = [
             # ./home-specifix.nix
             ../../home
+            ../Pluto-M3-Max/brew-only.nix
     ];
   };
 in {

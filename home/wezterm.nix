@@ -1,12 +1,12 @@
-{config, pkgs,...}:
+{config, osConfig, pkgs,...}:
 # WezTerm is a powerful cross-platform terminal emulator and multiplexerwritten
 # written by @wez and implemented in Rust
 # see https://wezfurlong.org/wezterm/index.html
 let
   # the path to wezterm lua directory
   configPath = ../share/wezterm/lua;
-  default_prog = if (builtins.elem "fish" config.homebrew.brews) then
-    "${config.homebrew.brewPrefix}/fish"
+  default_prog = if (builtins.elem "fish" osConfig.homebrew.brews) then
+    "${osConfig.homebrew.brewPrefix}/fish"
   else if config.programs.fish.enable then
     "${pkgs.fish}/bin/fish"
   else
@@ -38,7 +38,7 @@ config.default_prog = { "${default_prog}", "-l" }
 
 config.color_scheme = "${color_scheme}"
 
-local uni_font_size = ${font_size}
+local uni_font_size = ${toString font_size}
 config.font_size = uni_font_size
 config.font = wezterm.font_with_fallback({
 	"Iosevka Term SS08 Extended",
