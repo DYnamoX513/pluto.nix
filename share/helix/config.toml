@@ -1,0 +1,47 @@
+# theme = "fleet_dark"
+theme = "mellow"
+# theme = "rasmus"
+# theme = "rose_pine_dawn"
+# theme = "zed_onedark"
+
+[editor]
+auto-info = true
+bufferline = "multiple"
+true-color = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.statusline]
+left = ["mode", "spinner", "read-only-indicator", "file-modification-indicator", "version-control"]
+center = ["file-name", "diagnostics"]
+right = ["separator", "selections", "position", "total-line-numbers", "separator", "file-encoding", "file-line-ending", "file-type"]
+separator = "│"
+# mode.normal = "NORMAL"
+# mode.insert = "INSERT"
+# mode.select = "SELECT"
+
+[editor.lsp]
+auto-signature-help = true
+display-signature-help-docs = true
+snippets = true
+
+[editor.soft-wrap]
+enable = true
+
+[editor.whitespace.render]
+space = "none"
+tab = "all"
+nbsp = "none"
+nnbsp = "none"
+newline = "none"
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+nnbsp = "␣"
+tab = "→"
+newline = "⏎"
+tabpad = "·" # Tabs will look like "→···" (depending on tab width)

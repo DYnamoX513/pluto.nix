@@ -1,0 +1,64 @@
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+# [language-server.pyright]
+# command = "pyright-langserver"
+# args = ["--stdio"]
+
+[language-server.pyright.config.python.analysis]
+ignore = ["*"]
+
+[language-server.pyright.config.pyright]
+disableOrganizeImports = true
+
+[[language]]
+name = "python"
+language-servers = [{ name = "ruff", except-features = ["hover"] }, "pyright"]
+auto-format = true
+
+[language-server.clangd]
+command = "clangd"
+args = [
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--fallback-style=llvm",
+    "--log=error",
+    "--offset-encoding=utf-16",
+]
+
+# [[language]]
+# name = "cpp"
+# auto-format = true
+#
+# [[language]]
+# name = "c"
+# auto-format = true
+
+# Prettier
+[[language]]
+name = "html"
+formatter = { command = 'prettier', args = ["--parser", "html"] }
+
+[[language]]
+name = "json"
+formatter = { command = 'prettier', args = ["--parser", "json"] }
+
+[[language]]
+name = "css"
+formatter = { command = 'prettier', args = ["--parser", "css"] }
+
+[[language]]
+name = "javascript"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+
+[[language]]
+name = "typescript"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+
+[[language]]
+name = "tsx"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
