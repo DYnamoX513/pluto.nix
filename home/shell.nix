@@ -38,7 +38,7 @@ unset __conda_setup
     # cargo
     cargo = shell:
          if shell == "fish" then
-    "fish_add_path $HOME/.cargo/bin"
+    "fish_add_path -p $HOME/.cargo/bin" # prepend by default
         else
             ''. "$HOME/.cargo/env"''
         ;
@@ -52,6 +52,17 @@ source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
 
     # homebrew
     homebrew = shell: ''eval "$(${config.homebrew.brewPrefix}/brew shellenv ${shell})"'';
+
+    # neovim mason installed binaries 
+    mason = shell:
+         if shell == "fish" then
+    # -a = append, but $fish_user_path is prepended to $PATH, so use -P to manipulate $PATH
+    # results in $fish_user_path -> $PATH -> [mason]
+    "fish_add_path -aP $HOME/.local/share/nvim/mason/bin"
+        else
+        ''export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"''
+        ;
+
 
     # ~/Library/Application\ Support/JetBrains/Toolbox/scripts/... E.g., clion
 
@@ -79,6 +90,7 @@ source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
 (orbstack shell)
             (cargo shell)
             (homebrew shell)
+            (mason shell)
         ];
     commonInteractive = shell:
         [
