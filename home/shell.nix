@@ -135,16 +135,16 @@ interactiveShellInit =
         ];
         functions = {
             # yazi change cwd
-yy = {
-body = ''
-        set tmp (mktemp -t "yazi-cwd.XXXXXX")
-        yazi $argv --cwd-file="$tmp"
-        if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-            builtin cd -- "$cwd"
-        end
-        rm -f -- "$tmp"
-            '';
-        };
+# yy = {
+# body = ''
+#     set tmp (mktemp -t "yazi-cwd.XXXXXX")
+#     yazi $argv --cwd-file="$tmp"
+#     if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+#         builtin cd -- "$cwd"
+#     end
+#     rm -f -- "$tmp"
+#             '';
+#         };
             # switch to java 8
             java8 = {
 body = ''

@@ -44,6 +44,12 @@
     enableFishIntegration = true;
     enableZshIntegration = true;
     };
+    programs.yazi = {
+        enable = true;
+
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+    };
     programs.zoxide = {
         enable = true;
 
