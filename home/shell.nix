@@ -56,11 +56,12 @@ source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
     # neovim mason installed binaries 
     mason = shell:
          if shell == "fish" then
-    # -a = append, but $fish_user_path is prepended to $PATH, so use -P to manipulate $PATH
-    # results in $fish_user_path -> $PATH -> [mason]
-    "fish_add_path -aP $HOME/.local/share/nvim/mason/bin"
+    # -a = append, but $fish_user_path is prepended to $PATH
+    # results in $fish_user_path -> [mason] -> $PATH 
+    "fish_add_path -a $HOME/.local/share/nvim/mason/bin"
         else
-        ''export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"''
+            # prepend
+        ''export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"''
         ;
 
 
