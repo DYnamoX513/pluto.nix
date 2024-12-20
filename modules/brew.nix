@@ -61,10 +61,9 @@
 
     # `brew install`
     brews = [
-        "bottom" # alternative top -- btm
+        "btop" # resource monitor written in c++. (for a Rust alternative, use bottom)
         "cmake"
-        "conan"
-        "doxygen"
+        "conan" # c++ package manager
         "dust" # du in Rust
         "fastfetch"
         "fd"
@@ -72,13 +71,12 @@
         "fzf"
         "gcc"
         "git-lfs"
-        "gnu-tar"
-        "gnutls"
+        "gnu-tar" # GNU-tar (default `tar` is BSD-tar)
         "helix"
         "just"
         "lazygit"
-        "lrzsz"
-        "lsd"
+        "lrzsz" # https://trzsz.github.io/ssh
+        "lsd" # ls Deluxe
         "neovim"
         "oath-toolkit" # oath cli
         "python3"
@@ -86,7 +84,7 @@
         "ripgrep"
         "starship"
         "trzsz-ssh" # Simple ssh client with trzsz
-        "xz"
+        "uv"  # Python package installer and resolver, written in Rust
         "yazi" # file browser in terminal
         "zoxide" # z
     ];
@@ -103,7 +101,6 @@
 "wezterm@nightly" # need manually update through 'brew update wezterm@nightly'
 
             # fonts
-"font-blex-mono-nerd-font"
 "font-ibm-plex-mono"
 "font-ibm-plex-sans"
 "font-ibm-plex-serif"
@@ -111,6 +108,9 @@
 "font-iosevka"
 "font-iosevka-slab"
 "font-iosevka-ss08" # PragmataPro flavor
+
+            # nerd fonts
+"font-blex-mono-nerd-font"
 "font-iosevka-term-nerd-font"
 "font-iosevka-term-slab-nerd-font"
 "font-symbols-only-nerd-font"
