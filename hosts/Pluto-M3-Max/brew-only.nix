@@ -5,7 +5,9 @@
   pkgs,
   ...
 }:
-# use homebrew exclusively on Darwin
+# Use homebrew exclusively on Darwin
+# This bootstrapping breaks a lot of things
+# e.g., most shell integrations as they use binary paths located in nix store
 let
   # brew and cask packages
   brewNames = builtins.map (brew: brew.name) osConfig.homebrew.brews;
@@ -24,7 +26,7 @@ let
   in
     prog: builtins.elem prog mergedPackages;
 
-  mkGhostPackage = name:
+  emptyPackage = name:
     pkgs.emptyDirectory
     // {
       meta =
@@ -39,13 +41,16 @@ let
     (name: value:
       if value ? package
       then {
-        package = lib.mkOverride 999 (mkGhostPackage name);
+        package = lib.mkOverride 999 (emptyPackage name);
       }
       else {})
     (lib.filterAttrs
       (
         # some shell integrations require the fish package during the build
-        prog: _: prog != "fish" && isProgramInHomebrew prog
+        prog: _:
+          prog
+          != "fish"
+          && isProgramInHomebrew prog
       )
       config.programs);
 in {
@@ -62,6 +67,6 @@ in {
       # ```
       # hasShellIntegrationEmbedded = lib.versionAtLeast cfg.package.version "0.48.0";
       # ```
-      fzf.package = mkGhostPackage "fzf" // {version = "0.57.0";}; # homebrew's stable fzf (Dec 2024)
+      fzf.package = emptyPackage "fzf" // {version = "0.57.0";}; # homebrew's stable fzf (Dec 2024)
     };
 }
