@@ -19,8 +19,8 @@
       "https://cache.nixos.org"
     ];
     # trusted-public-keys = [
-      # the default public key of cache.nixos.org, it's built-in, no need to add it here
-      # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    # the default public key of cache.nixos.org, it's built-in, no need to add it here
+    # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     # ];
   };
 
@@ -54,7 +54,6 @@
       # to avoid problems caused by different versions of nixpkgs dependencies.
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   # The `outputs` function will return all the build results of the flake.
@@ -65,7 +64,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
-        nixpkgs-darwin,
+    nixpkgs-darwin,
     nix-darwin,
     home-manager,
     ...
@@ -91,64 +90,63 @@
       // {
         inherit username userfullname useremail mkDarwinConfig scanPaths;
       };
-    mkDarwinConfig = { 
-      system, 
+    mkDarwinConfig = {
+      system,
       hostname,
-    extra-modules ? [],
-                home-modules ? [],
-    }: nix-darwin.lib.darwinSystem {
-      inherit system;
-                    specialArgs = specialArgs // {inherit hostname;};
-      modules = [
-        ./modules/brew.nix
-        ./modules/host-users.nix
-        ./modules/nix-core.nix
-        ./modules/system.nix
+      extra-modules ? [],
+      home-modules ? [],
+    }:
+      nix-darwin.lib.darwinSystem {
+        inherit system;
+        specialArgs = specialArgs // {inherit hostname;};
+        modules =
+          [
+            ./modules/brew.nix
+            ./modules/host-users.nix
+            ./modules/nix-core.nix
+            ./modules/system.nix
+          ]
+          ++ extra-modules
+          ++ [
+            ({lib, ...}: {
+              nixpkgs.pkgs = import nixpkgs-darwin {inherit system;};
+            })
+          ]
+          ++ (
+            # home manager
+            nixpkgs.lib.optionals ((nixpkgs.lib.lists.length home-modules) > 0)
+            [
+              home-manager.darwinModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                # backup existing config files
+                home-manager.backupFileExtension = "hm-backup";
 
-      ] ++ extra-modules ++ [
-
-        ({lib, ...}: {
-          nixpkgs.pkgs = import nixpkgs-darwin {inherit system;};
-        })
-                        ]
-
-      ++ (
-        # home manager
-        nixpkgs.lib.optionals ((nixpkgs.lib.lists.length home-modules) > 0)
-        [
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-                                    # backup existing config files
-home-manager.backupFileExtension = "hm-backup";
-
-            home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users."${username}".imports = home-modules;
-          }
-        ]
-      );
-                    
-    };
-            # scan for all directories and files end with .nix but not default.nix
-scanPaths = path:
-    builtins.map
-    (f: (path + "/${f}"))
-    (builtins.attrNames
-      (nixpkgs.lib.attrsets.filterAttrs
-        (
-          path: _type:
-            (_type == "directory") # include directories
-            || (
-              (path != "default.nix") # ignore default.nix
-              && (nixpkgs.lib.strings.hasSuffix ".nix" path) # include .nix files
-            )
-        )
-        (builtins.readDir path)));
+                home-manager.extraSpecialArgs = specialArgs;
+                home-manager.users."${username}".imports = home-modules;
+              }
+            ]
+          );
+      };
+    # scan for all directories and files end with .nix but not default.nix
+    scanPaths = path:
+      builtins.map
+      (f: (path + "/${f}"))
+      (builtins.attrNames
+        (nixpkgs.lib.attrsets.filterAttrs
+          (
+            path: _type:
+              (_type == "directory") # include directories
+              || (
+                (path != "default.nix") # ignore default.nix
+                && (nixpkgs.lib.strings.hasSuffix ".nix" path) # include .nix files
+              )
+          )
+          (builtins.readDir path)));
     # import all defined hosts
-     hosts = map (f: import f specialArgs) (scanPaths ./hosts);
+    hosts = map (f: import f specialArgs) (scanPaths ./hosts);
   in {
-
     # generates darwinConfigurations
     darwinConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (map (c: c.darwinConfiguration or {}) hosts);
 
@@ -157,4 +155,3 @@ scanPaths = path:
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
 }
-

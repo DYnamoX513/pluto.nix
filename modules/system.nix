@@ -1,13 +1,12 @@
-{ pkgs, ... }:
-
-  ###################################################################################
-  #
-  #  macOS's System configuration
-  #
-  #  All the configuration options are documented here:
-  #    https://daiderd.com/nix-darwin/manual/index.html#sec-options
-  #
-  ###################################################################################
+{pkgs, ...}:
+###################################################################################
+#
+#  macOS's System configuration
+#
+#  All the configuration options are documented here:
+#    https://daiderd.com/nix-darwin/manual/index.html#sec-options
+#
+###################################################################################
 {
   system = {
     # NixOS will option defaults corresponding to the specified release
@@ -26,5 +25,5 @@
 
   # Add ability to used TouchID for sudo authentication
   security.pam.enableSudoTouchIdAuth = true;
-programs.zsh.enable = true;
+  programs.zsh.enable = true;
 }

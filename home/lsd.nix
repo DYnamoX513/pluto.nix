@@ -1,20 +1,20 @@
-{... }: {
-programs.lsd = {
-  enable = true;
-        enableAliases = true;
-        settings = {
-color = {
-  # When to colorize the output.
-  # When "classic" is set, this is set to "never".
-  # Possible values: never, auto, always
-  when="auto";
-  # How to colorize the output.
-  # When "classic" is set, this is set to "no-color".
-  # Possible values: default, custom
-  # When "custom" is set, lsd will look in the config directory for `colors.yaml`.
-  theme = "custom";
-               };
-        };
+{...}: {
+  programs.lsd = {
+    enable = true;
+    enableAliases = true;
+    settings = {
+      color = {
+        # When to colorize the output.
+        # When "classic" is set, this is set to "never".
+        # Possible values: never, auto, always
+        when = "auto";
+        # How to colorize the output.
+        # When "classic" is set, this is set to "no-color".
+        # Possible values: default, custom
+        # When "custom" is set, lsd will look in the config directory for `colors.yaml`.
+        theme = "custom";
+      };
+    };
     colors = {
       user = 110;
       group = 67;
@@ -61,4 +61,5 @@ color = {
         conflicted = "dark_red";
       };
     };
-};}
+  };
+}

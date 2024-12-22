@@ -36,14 +36,14 @@
     # signing = {
     #   key = "xxx";
     #   signByDefault = true;
-     delta = {
+    delta = {
       enable = true;
       options = {
         diff-so-fancy = true;
         line-numbers = true;
         true-color = "always";
-            };
-        };
+      };
+    };
 
     # delta = {
     #   enable = true;

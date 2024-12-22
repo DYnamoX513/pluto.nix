@@ -1,7 +1,6 @@
-{ pkgs, ... }: {
-
+{pkgs, ...}: {
   ##########################################################################
-  # 
+  #
   #  Install all apps and packages here.
   #
   ##########################################################################
@@ -15,19 +14,19 @@
   environment.systemPackages = with pkgs; [
     neovim
     git
-    just # use Justfile to simplify nix-darwin's commands 
+    just # use Justfile to simplify nix-darwin's commands
   ];
 
-    # in global environment
-    environment.variables = {
-     EDITOR = "nvim";
-     LANG="en_US.UTF-8";
-     LC_CTYPE="en_US.UTF-8";
-     LC_ALL="en_US.UTF-8";
-    };
+  # in global environment
+  environment.variables = {
+    EDITOR = "nvim";
+    LANG = "en_US.UTF-8";
+    LC_CTYPE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+  };
 
   # WARN: To make this work, homebrew need to be installed manually, see https://brew.sh
-  # 
+  #
   # The apps installed by homebrew are not managed by nix, and not reproducible!
   # But on macOS, homebrew has a much larger selection of apps than nixpkgs, especially for GUI apps!
   homebrew = {
@@ -38,13 +37,13 @@
       # upgrade = true; # Upgrade outdated casks, formulae, and App Store apps
       # 'zap': uninstalls all formulae(and related files) not listed in the generated Brewfile
       # cleanup = "zap";
-      extraFlags = [ "--verbose" ];
+      extraFlags = ["--verbose"];
     };
 
     # Applications to install from Mac App Store using mas.
     # You need to install all these Apps manually first so that your apple account have records for them.
     # otherwise Apple Store will refuse to install them.
-    # For details, see https://github.com/mas-cli/mas 
+    # For details, see https://github.com/mas-cli/mas
     masApps = {
       # Xcode = 497799835;
       # Wechat = 836500024;
@@ -61,59 +60,59 @@
 
     # `brew install`
     brews = [
-        "btop" # resource monitor written in c++. (for a Rust alternative, use bottom)
-        "cmake"
-        "conan" # c++ package manager
-        "dust" # du in Rust
-        "fastfetch"
-        "fd"
-        "fish"
-        "fzf"
-        "gcc"
-        "git-lfs"
-        "gnu-tar" # GNU-tar (default `tar` is BSD-tar)
-        "helix"
-        "just"
-        "lazygit"
-        "lrzsz" # https://trzsz.github.io/ssh
-        "lsd" # ls Deluxe
-        "neovim"
-        "oath-toolkit" # oath cli
-        "python3"
-        "rbenv"
-        "ripgrep"
-        "starship"
-        "trzsz-ssh" # Simple ssh client with trzsz
-        "uv"  # Python package installer and resolver, written in Rust
-        "yazi" # file browser in terminal
-        "zoxide" # z
+      "btop" # resource monitor written in c++. (for a Rust alternative, use bottom)
+      "cmake"
+      "conan" # c++ package manager
+      "dust" # du in Rust
+      "fastfetch"
+      "fd"
+      "fish"
+      "fzf"
+      "gcc"
+      "git-lfs"
+      "gnu-tar" # GNU-tar (default `tar` is BSD-tar)
+      "helix"
+      "just"
+      "lazygit"
+      "lrzsz" # https://trzsz.github.io/ssh
+      "lsd" # ls Deluxe
+      "neovim"
+      "oath-toolkit" # oath cli
+      "python3"
+      "rbenv"
+      "ripgrep"
+      "starship"
+      "trzsz-ssh" # Simple ssh client with trzsz
+      "uv" # Python package installer and resolver, written in Rust
+      "yazi" # file browser in terminal
+      "zoxide" # z
     ];
 
     # `brew install --cask`
     casks = [
-"iina" # video player
-"keycastr" # show keystroke visualiser
-"neovide" # neovim GUI
-"openinterminal" # for Finder
-"raycast" # (HotKey: alt/option + space)search, caculate and run scripts(with many plugins)
-"stats" # beautiful system monitor
-# "vivaldi" # Vivaldi browser
-"wezterm@nightly" # need manually update through 'brew update wezterm@nightly'
+      "iina" # video player
+      "keycastr" # show keystroke visualiser
+      "neovide" # neovim GUI
+      "openinterminal" # for Finder
+      "raycast" # (HotKey: alt/option + space)search, caculate and run scripts(with many plugins)
+      "stats" # beautiful system monitor
+      # "vivaldi" # Vivaldi browser
+      "wezterm@nightly" # need manually update through 'brew update wezterm@nightly'
 
-            # fonts
-"font-ibm-plex-mono"
-"font-ibm-plex-sans"
-"font-ibm-plex-serif"
-"font-input"
-"font-iosevka"
-"font-iosevka-slab"
-"font-iosevka-ss08" # PragmataPro flavor
+      # fonts
+      "font-ibm-plex-mono"
+      "font-ibm-plex-sans"
+      "font-ibm-plex-serif"
+      "font-input"
+      "font-iosevka"
+      "font-iosevka-slab"
+      "font-iosevka-ss08" # PragmataPro flavor
 
-            # nerd fonts
-"font-blex-mono-nerd-font"
-"font-iosevka-term-nerd-font"
-"font-iosevka-term-slab-nerd-font"
-"font-symbols-only-nerd-font"
+      # nerd fonts
+      "font-blex-mono-nerd-font"
+      "font-iosevka-term-nerd-font"
+      "font-iosevka-term-slab-nerd-font"
+      "font-symbols-only-nerd-font"
     ];
   };
 }

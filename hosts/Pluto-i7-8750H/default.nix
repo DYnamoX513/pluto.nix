@@ -10,16 +10,16 @@
 let
   hostname = "Pluto-i7-8750H";
   system = "x86_64-darwin";
-modules = {
+  modules = {
     extra-modules = [
-            # ./host-specifix.nix
-        ];
+      # ./host-specifix.nix
+    ];
     home-modules = [
-            # ./home-specifix.nix
-            ../../home
-            ../Pluto-M3-Max/brew-only.nix
+      # ./home-specifix.nix
+      ../../home
+      ../Pluto-M3-Max/brew-only.nix
     ];
   };
 in {
-  darwinConfiguration.${hostname} = mkDarwinConfig  (modules // { inherit system hostname; });
+  darwinConfiguration.${hostname} = mkDarwinConfig (modules // {inherit system hostname;});
 }

@@ -10,16 +10,19 @@
 let
   hostname = "Pluto-M3-Max";
   system = "aarch64-darwin";
-modules = {
+  modules = {
     extra-modules = [
-            # ./host-specifix.nix
-        ];
+      # ./host-specifix.nix
+    ];
     home-modules = [
-            # ./home-specifix.nix
-            ../../home
-            ./brew-only.nix
+      # ./home-specifix.nix
+      ../../home
+      ./brew-only.nix
     ];
   };
 in {
-  darwinConfiguration.${hostname} = mkDarwinConfig { inherit system hostname; inherit (modules) extra-modules home-modules;};
+  darwinConfiguration.${hostname} = mkDarwinConfig {
+    inherit system hostname;
+    inherit (modules) extra-modules home-modules;
+  };
 }

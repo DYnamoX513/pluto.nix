@@ -1,5 +1,4 @@
-{config,...}:
-let
+{config, ...}: let
   # the path to helix directory
   configPath = ../share/helix;
 in {

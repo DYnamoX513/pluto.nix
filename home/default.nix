@@ -1,8 +1,10 @@
-{ username, scanPaths, ... }:
-
 {
+  username,
+  scanPaths,
+  ...
+}: {
   # import sub modules
-    imports = scanPaths ./.;
+  imports = scanPaths ./.;
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -24,36 +26,35 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-    programs.thefuck = {
-        enable = true;
+  programs.thefuck = {
+    enable = true;
 
     enableFishIntegration = true;
     enableZshIntegration = true;
-
-};
-    programs.rbenv = {
-        enable = true;
-
-    enableFishIntegration = true;
-    enableZshIntegration = true;
-    };
-
-    programs.fzf = {
-        enable = true;
+  };
+  programs.rbenv = {
+    enable = true;
 
     enableFishIntegration = true;
     enableZshIntegration = true;
-    };
-    programs.yazi = {
-        enable = true;
+  };
+
+  programs.fzf = {
+    enable = true;
 
     enableFishIntegration = true;
     enableZshIntegration = true;
-    };
-    programs.zoxide = {
-        enable = true;
+  };
+  programs.yazi = {
+    enable = true;
 
     enableFishIntegration = true;
     enableZshIntegration = true;
-    };
+  };
+  programs.zoxide = {
+    enable = true;
+
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+  };
 }
