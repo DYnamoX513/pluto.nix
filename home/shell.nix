@@ -104,7 +104,7 @@ in
     programs.zsh = {
         enable = true;
         # instead, use zsh-autocompletion https://github.com/marlonrichert/zsh-autocomplete
-        enableCompletion = false;
+        # enableCompletion = false;
         # zsh-autosuggestions
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
@@ -118,15 +118,15 @@ theme = "robbyrussell";
             ];
         };
         plugins=[
-  {
-    name = "zsh-autocomplete";
-    src = pkgs.fetchFromGitHub {
-      owner = "marlonrichert";
-      repo = "zsh-autocomplete";
-      rev = "24.09.04";
-      sha256 = "";
-    };
-  }
+  # {
+  #   name = "zsh-autocomplete";
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "marlonrichert";
+  #     repo = "zsh-autocomplete";
+  #     rev = "24.09.04";
+  #     sha256 = "sha256-o8IQszQ4/PLX1FlUvJpowR2Tev59N8lI20VymZ+Hp4w=";
+  #   };
+  # }
 
 ];
 profileExtra = lib.strings.concatLines (commonLogin "zsh");
