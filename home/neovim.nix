@@ -7,7 +7,7 @@
 # Use customized NvChad-starter
 let
   # the path to nvim directory
-  configPath = ../share/nvim;
+  configPath = "${config.home.homeDirectory}/pluto.nix/share/nvim";
 in {
   xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink configPath;
 

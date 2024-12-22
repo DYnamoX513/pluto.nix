@@ -9,7 +9,7 @@
 # see https://wezfurlong.org/wezterm/index.html
 let
   # the path to wezterm lua directory
-  configPath = ../share/wezterm/lua;
+  configPath = "${config.home.homeDirectory}/pluto.nix/share/wezterm/lua";
   default_prog =
     if (builtins.elem "fish" osConfig.homebrew.brews)
     then "${osConfig.homebrew.brewPrefix}/fish"
