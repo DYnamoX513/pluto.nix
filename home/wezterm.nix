@@ -1,6 +1,5 @@
 {
   config,
-  osConfig,
   pkgs,
   ...
 }:
@@ -12,9 +11,7 @@ let
   luaConfigPath = "${config.home.homeDirectory}/pluto.nix/share/wezterm/lua";
 
   default_prog =
-    if (builtins.elem "fish" osConfig.homebrew.brews)
-    then "${osConfig.homebrew.brewPrefix}/fish"
-    else if config.programs.fish.enable
+    if config.programs.fish.enable
     then "${pkgs.fish}/bin/fish"
     else "${pkgs.zsh}/bin/zsh";
   # all color_schemes: https://wezfurlong.org/wezterm/colorschemes/index.html
@@ -55,7 +52,6 @@ let
     return config
   '';
 in {
-
   # use homebrew's wezterm@nightly
   # programs.wezterm = {
   #   enable = true;
@@ -64,8 +60,7 @@ in {
   xdg.configFile."wezterm" = {
     target = "wezterm/wezterm.lua";
     text = mainConfig;
-    };
-    
+  };
 
   xdg.configFile."wezterm_lua" = {
     target = "wezterm/lua";
