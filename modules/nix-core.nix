@@ -28,5 +28,16 @@
   # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx' to '/nix/store/.links/xxxx': File exists"
   nix.settings = {
     auto-optimise-store = false;
+    # substituers that will be considered before the official ones(https://cache.nixos.org)
+    substituters = [
+      # cache mirror located in China
+      # status: https://mirrors.ustc.edu.cn/status/
+      "https://mirrors.ustc.edu.cn/nix-channels/store"
+
+      "https://nix-community.cachix.org"
+    ];
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
   };
 }
