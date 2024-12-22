@@ -1,8 +1,6 @@
 {
   config,
-  osConfig,
   lib,
-  pkgs,
   ...
 }: let
   # miniconda initialize
@@ -52,9 +50,6 @@
     source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
   '';
 
-  # homebrew
-  homebrew = shell: ''eval "$(${osConfig.homebrew.brewPrefix}/brew shellenv ${shell})"'';
-
   # neovim mason installed binaries
   mason = shell:
     if shell == "fish"
@@ -90,7 +85,6 @@
   commonLogin = shell: [
     (orbstack shell)
     (cargo shell)
-    (homebrew shell)
     (mason shell)
   ];
   commonInteractive = shell: [
