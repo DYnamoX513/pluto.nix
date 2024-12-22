@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   lib,
   ...
 }: let
@@ -59,7 +60,7 @@
       "fish_add_path -a $HOME/.local/share/nvim/mason/bin"
     else
       # prepend
-      ''export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"'';
+      "export PATH=$HOME/.local/share/nvim/mason/bin:$PATH";
 
   # ~/Library/Application\ Support/JetBrains/Toolbox/scripts/... E.g., clion
 
@@ -81,6 +82,16 @@
   # wezterm completion
   wezterm = shell: ''eval "$(wezterm shell-completion --shell ${shell})"'';
 
+  # TODO: separate Darwin specific configurations into sub-modules
+  homebrewCompletion = let
+    fishCompletionDir = "${osConfig.homebrew.brewPrefix}/../share/fish/vendor_completions.d";
+    zshCompletionDir = "${osConfig.homebrew.brewPrefix}/../share/zsh/site-functions";
+  in
+    shell:
+      if shell == "fish"
+      then "set -agu fish_complete_path ${fishCompletionDir}"
+      else "fpath+=${zshCompletionDir}";
+
   # brew + orbstack + cargo + language
   commonLogin = shell: [
     (orbstack shell)
@@ -88,6 +99,7 @@
     (mason shell)
   ];
   commonInteractive = shell: [
+    (homebrewCompletion shell)
   ];
   # fancy fish greeting
 in {
