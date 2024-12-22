@@ -1,7 +1,7 @@
 # just is a command runner, Justfile is very similar to Makefile, but simpler.
 
 # Do not change the following line's position, as update-hostname refs it in sed address
-hostname := "Pluto-i7-8750H" 
+hostname := "__HOSTNAME__" 
 
 # List all the just commands
 default:
