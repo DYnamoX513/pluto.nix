@@ -24,6 +24,12 @@
         ssh_only = false;
         disabled = false;
       };
+      hostname = {
+        disabled = false;
+      };
+      shell = {
+        disabled = false;
+      };
     };
   };
 }
