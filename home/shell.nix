@@ -101,7 +101,6 @@
   commonInteractive = shell: [
     (homebrewCompletion shell)
   ];
-  # fancy fish greeting
 in {
   programs.zsh = {
     enable = true;
@@ -147,6 +146,25 @@ in {
       ++ [
         condaFish
         (wezterm "fish") # no enableFishIntegration for wezterm (24.11)
+        # fancy fish greeting
+        # "set -gu fish_greeting hello"
+        /*
+           ''
+          set_color yellow; echo -n "...Landing on"; set_color normal
+          echo -E "     ___                       ___                       ___
+                       /  /\                     /__/\          ___        /  /\
+                      /  /::\                    \  \:\        /  /\      /  /::\
+                     /  /:/\:\  ___     ___       \  \:\      /  /:/     /  /:/\:\
+                    /  /:/~/:/ /__/\   /  /\  ___  \  \:\    /  /:/     /  /:/  \:\
+                   /__/:/ /:/  \  \:\ /  /:/ /__/\  \__\:\  /  /::\    /__/:/ \__\:\
+                   \  \:\/:/    \  \:\  /:/  \  \:\ /  /:/ /__/:/\:\   \  \:\ /  /:/
+                    \  \::/      \  \:\/:/    \  \:\  /:/  \__\/  \:\   \  \:\  /:/
+                     \  \:\       \  \::/      \  \:\/:/        \  \:\   \  \:\/:/
+                      \  \:\       \__\/        \  \::/          \__\/    \  \::/
+                       \__\/                     \__\/                     \__\/
+          "
+        ''
+        */
       ]
     );
     functions = {
