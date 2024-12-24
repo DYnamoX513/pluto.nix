@@ -12,8 +12,8 @@ let
 
   default_prog =
     if config.programs.fish.enable
-    then "${pkgs.fish}/bin/fish"
-    else "${pkgs.zsh}/bin/zsh";
+    then "${config.programs.fish.package}/bin/fish"
+    else "${config.programs.zsh.package}/bin/zsh";
   # all color_schemes: https://wezfurlong.org/wezterm/colorschemes/index.html
   color_scheme = "N0tch2k";
 

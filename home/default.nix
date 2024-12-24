@@ -1,6 +1,7 @@
 {
   username,
   scanPaths,
+  lib,
   ...
 }: {
   # import sub modules
@@ -32,12 +33,6 @@
     enableFishIntegration = true;
     enableZshIntegration = true;
   };
-  programs.rbenv = {
-    enable = true;
-
-    enableFishIntegration = true;
-    enableZshIntegration = true;
-  };
 
   programs.fzf = {
     enable = true;
@@ -45,12 +40,14 @@
     enableFishIntegration = true;
     enableZshIntegration = true;
   };
+
   programs.yazi = {
     enable = true;
 
     enableFishIntegration = true;
     enableZshIntegration = true;
   };
+
   programs.zoxide = {
     enable = true;
 
