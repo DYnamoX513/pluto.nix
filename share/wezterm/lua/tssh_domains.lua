@@ -72,7 +72,7 @@ function M.compute_exec_domains()
 	else
 		-- cannot find tssh in PATH
 		color = "Red"
-		text = "tssh -V failed: " .. stderr
+		text = "tssh -V failed: " .. stderr:gsub("^%s*(.-)%s*$", "%1")
 	end
 
 	local label = wezterm.format({
