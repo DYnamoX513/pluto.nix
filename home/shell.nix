@@ -107,6 +107,12 @@
   commonLogin = shell: [
     (orbstack shell)
     (cargo shell)
+    # make sure eval "$(brew shellenv)" is called before sourcing oh-my-zsh.sh
+    # See https://docs.brew.sh/Shell-Completion
+    # initExtraBeforeCompInit = lib.strings.concatLines [
+    #   (homebrew "zsh") # only works in interactive shell
+    # ];
+    (homebrew shell)
     (mason shell)
   ];
   commonInteractive = shell: [
@@ -146,16 +152,11 @@ in {
         condaZsh
       ]
     );
-    # make sure eval "$(brew shellenv)" is called before sourcing oh-my-zsh.sh
-    # See https://docs.brew.sh/Shell-Completion
-    initExtraBeforeCompInit = lib.strings.concatLines [
-      (homebrew "zsh")
-    ];
   };
 
   programs.fish = {
     enable = true;
-    loginShellInit = lib.strings.concatLines ([(homebrew "fish")] ++ commonLogin "fish");
+    loginShellInit = lib.strings.concatLines (commonLogin "fish");
     interactiveShellInit = lib.strings.concatLines (
       commonInteractive "fish"
       ++ [
