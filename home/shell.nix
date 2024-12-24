@@ -83,14 +83,25 @@
   wezterm = shell: ''eval "$(wezterm shell-completion --shell ${shell})"'';
 
   # TODO: separate Darwin specific configurations into sub-modules
-  homebrewCompletion = let
-    fishCompletionDir = "${osConfig.homebrew.brewPrefix}/../share/fish/vendor_completions.d";
-    zshCompletionDir = "${osConfig.homebrew.brewPrefix}/../share/zsh/site-functions";
-  in
-    shell:
-      if shell == "fish"
-      then "set -agu fish_complete_path ${fishCompletionDir}"
-      else "fpath+=${zshCompletionDir}";
+
+  # Homebrew shellenv:
+  # This line not only sets PATH, but other variables like FPATH (zsh),
+  # HOMEBREW_PREFIX, HOMEBREW_CELLAR and HOMEBREW_REPOSITORY as well.
+  homebrew = shell: ''eval "$(${osConfig.homebrew.brewPrefix}/brew shellenv ${shell})"'';
+  # However, as Homebrew `prepend` its bin paths, this can cause problems if a package
+  # e.g., zoxide, is installed by both Homebrew and nix. (Especially when shell
+  # integration is enabled in home-manager)
+
+  # extra lines required by fish: https://docs.brew.sh/Shell-Completion
+  homebrewCompletionForFish = ''
+    if test -d (brew --prefix)"/share/fish/completions"
+        set -p fish_complete_path (brew --prefix)/share/fish/completions
+    end
+
+    if test -d (brew --prefix)"/share/fish/vendor_completions.d"
+        set -p fish_complete_path (brew --prefix)/share/fish/vendor_completions.d
+    end
+  '';
 
   # brew + orbstack + cargo + language
   commonLogin = shell: [
@@ -99,7 +110,6 @@
     (mason shell)
   ];
   commonInteractive = shell: [
-    (homebrewCompletion shell)
   ];
 in {
   programs.zsh = {
@@ -136,16 +146,22 @@ in {
         condaZsh
       ]
     );
+    # make sure eval "$(brew shellenv)" is called before sourcing oh-my-zsh.sh
+    # See https://docs.brew.sh/Shell-Completion
+    initExtraBeforeCompInit = lib.strings.concatLines [
+      (homebrew "zsh")
+    ];
   };
 
   programs.fish = {
     enable = true;
-    loginShellInit = lib.strings.concatLines (commonLogin "fish");
+    loginShellInit = lib.strings.concatLines ([(homebrew "fish")] ++ commonLogin "fish");
     interactiveShellInit = lib.strings.concatLines (
       commonInteractive "fish"
       ++ [
         condaFish
         (wezterm "fish") # no enableFishIntegration for wezterm (24.11)
+        homebrewCompletionForFish
         # fancy fish greeting
         # "set -gu fish_greeting hello"
         /*
