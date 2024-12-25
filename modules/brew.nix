@@ -66,26 +66,29 @@
       "dust" # du in Rust
       "fastfetch"
       "fd"
-      "fish"
-      "fzf"
       "gcc"
       "git-lfs"
       "gnu-tar" # GNU-tar (default `tar` is BSD-tar)
-      "helix"
-      "just"
-      "lazygit"
       "lrzsz" # https://trzsz.github.io/ssh
-      "lsd" # ls Deluxe
-      "neovim"
+      "node" # also required by pyright, prettier ...
       "oath-toolkit" # oath cli
       "python3"
-      "rbenv"
       "ripgrep"
-      "starship"
       "trzsz-ssh" # Simple ssh client with trzsz
       "uv" # Python package installer and resolver, written in Rust
-      "yazi" # file browser in terminal
-      "zoxide" # z
+
+      # Enabled in home-mananger
+      # "fish"
+      # "fzf"
+      # "helix"
+      # "just"
+      # "lazygit"
+      # "lsd" # ls Deluxe
+      # "neovim"
+      # "rbenv"
+      # "starship"
+      # "yazi" # file browser in terminal
+      # "zoxide" # z
     ];
 
     # `brew install --cask`

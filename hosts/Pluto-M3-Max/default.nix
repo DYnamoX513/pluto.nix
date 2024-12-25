@@ -30,7 +30,7 @@ let
             # `brew install`
             brews = [
               "go"
-              "pyenv" # python2
+              # "pyenv" checkout uv -> https://docs.astral.sh/uv/
               # "x86_64-unknown-linux-gnu" # cross compiler
               "zellij" # terminal multiplexer
             ];
