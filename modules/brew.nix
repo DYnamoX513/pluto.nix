@@ -70,6 +70,7 @@
       "git-lfs"
       "gnu-tar" # GNU-tar (default `tar` is BSD-tar)
       "lrzsz" # https://trzsz.github.io/ssh
+      "neovim" # WARN: nixpkgs's neovim seems broken in some circumstances (0.10.3)
       "node" # also required by pyright, prettier ...
       "oath-toolkit" # oath cli
       "python3"
@@ -84,7 +85,6 @@
       # "just"
       # "lazygit"
       # "lsd" # ls Deluxe
-      # "neovim"
       # "rbenv"
       # "starship"
       # "yazi" # file browser in terminal
