@@ -4,41 +4,6 @@
   lib,
   ...
 }: let
-  # miniconda initialize
-  condaDir = "${config.home.homeDirectory}/miniconda3";
-
-  condaFish = ''
-    # >>> conda initialize >>>
-    # !! Contents within this block are managed by 'conda init' !!
-    if test -f ${condaDir}/bin/conda
-        eval ${condaDir}/bin/conda "shell.fish" "hook" $argv | source
-    else
-        if test -f "${condaDir}/etc/fish/conf.d/conda.fish"
-            . "${condaDir}/etc/fish/conf.d/conda.fish"
-        else
-            set -x PATH "${condaDir}/bin" $PATH
-        end
-    end
-    # <<< conda initialize <<<
-  '';
-
-  condaZsh = ''
-    # >>> conda initialize >>>
-    # !! Contents within this block are managed by 'conda init' !!
-    __conda_setup="$('${condaDir}/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__conda_setup"
-    else
-        if [ -f "${condaDir}/etc/profile.d/conda.sh" ]; then
-            . "${condaDir}/etc/profile.d/conda.sh"
-        else
-            export PATH="${condaDir}/bin:$PATH"
-        fi
-    fi
-    unset __conda_setup
-    # <<< conda initialize <<<
-  '';
-
   # cargo
   cargo = shell:
     if shell == "fish"
@@ -92,6 +57,11 @@
   # e.g., zoxide, is installed by both Homebrew and nix. (Especially when shell
   # integration is enabled in home-manager)
 
+  preferNixOverBrew = shell:
+    if shell == "fish"
+    then "fish_add_path --global --move --path ${config.home.profileDirectory}/bin"
+    else "export PATH=\"${config.home.profileDirectory}/bin:$PATH\"";
+
   # extra lines required by fish: https://docs.brew.sh/Shell-Completion
   homebrewCompletionForFish = ''
     if test -d (brew --prefix)"/share/fish/completions"
@@ -105,15 +75,16 @@
 
   # brew + orbstack + cargo + language
   commonLogin = shell: [
-    (orbstack shell)
-    (cargo shell)
     # make sure eval "$(brew shellenv)" is called before sourcing oh-my-zsh.sh
     # See https://docs.brew.sh/Shell-Completion
     # initExtraBeforeCompInit = lib.strings.concatLines [
     #   (homebrew "zsh") # only works in interactive shell
     # ];
     (homebrew shell)
+    (preferNixOverBrew shell)
+    (cargo shell)
     (mason shell)
+    (orbstack shell)
   ];
   commonInteractive = shell: [
   ];
@@ -148,9 +119,6 @@ in {
     profileExtra = lib.strings.concatLines (commonLogin "zsh");
     initExtra = lib.strings.concatLines (
       commonInteractive "zsh"
-      ++ [
-        condaZsh
-      ]
     );
   };
 
@@ -160,7 +128,6 @@ in {
     interactiveShellInit = lib.strings.concatLines (
       commonInteractive "fish"
       ++ [
-        condaFish
         (wezterm "fish") # no enableFishIntegration for wezterm (24.11)
         homebrewCompletionForFish
         # fancy fish greeting
