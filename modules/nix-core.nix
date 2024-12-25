@@ -32,7 +32,8 @@
     substituters = [
       # cache mirror located in China
       # status: https://mirrors.ustc.edu.cn/status/
-      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      # "https://mirrors.ustc.edu.cn/nix-channels/store"
+      "https://mirror.sjtu.edu.cn/nix-channels/store" # SJTUG provides binary cache for nix-darwin
 
       "https://nix-community.cachix.org"
     ];
