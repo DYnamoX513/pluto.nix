@@ -81,7 +81,7 @@
     #   (homebrew "zsh") # only works in interactive shell
     # ];
     (homebrew shell)
-    (preferNixOverBrew shell)
+    # (preferNixOverBrew shell)
     (cargo shell)
     (mason shell)
     (orbstack shell)

@@ -1,5 +1,10 @@
 # Pluto's Nix Config (Flakes)
 
+> [!WARNING]
+> Currently Nixpkgs-unstable is really UNSTABLE on Darwin at least.
+> neovim-0.10.3 [freezes](https://github.com/NixOS/nixpkgs/issues/368247) in some circumstances while neovim from Homebrew does not.
+> I decide to use Homebrew exclusively on Darwin.
+
 ---
 ## WIP...
 

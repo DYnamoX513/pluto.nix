@@ -102,6 +102,7 @@
         specialArgs = specialArgs // {inherit hostname;};
         modules =
           [
+            ./modules/broken-pkgs.nix
             ./modules/brew.nix
             ./modules/host-users.nix
             ./modules/nix-core.nix
