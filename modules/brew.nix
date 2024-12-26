@@ -78,13 +78,13 @@
       "trzsz-ssh" # Simple ssh client with trzsz
       "uv" # Python package installer and resolver, written in Rust
 
-      # Enabled in home-mananger
+      # Can be enabled in home-mananger
       # "fish"
       # "fzf"
-      # "helix"
+      "helix"
       # "just"
       # "lazygit"
-      # "lsd" # ls Deluxe
+      "lsd" # ls Deluxe
       # "rbenv"
       # "starship"
       # "yazi" # file browser in terminal
