@@ -1,7 +1,7 @@
 {
+  config,
   pkgs,
   lib,
-  enabledByHomebrew,
   ...
 }: let
   settings = {
@@ -63,24 +63,38 @@
       conflicted = "dark_red";
     };
   };
-in
-  lib.mkMerge [
+
+  brewed = builtins.elem "lsd" config.brewery.rules.brewList;
+
+  yamlFormat = pkgs.formats.yaml {};
+  # aliases that use lsd in PATH
+  aliases = {
+    ls = "lsd";
+    ll = "lsd -l";
+    la = "lsd -A";
+    lt = "lsd --tree";
+    lla = "lsd -lA";
+    llt = "lsd -l --tree";
+  };
+in {
+  config = lib.mkMerge [
     {
-      programs.lsd.enable = !enabledByHomebrew "lsd";
+      # use nixpkgs-lsd only if it's not added to brew list
+      programs.lsd.enable = !brewed;
     }
-
-    # Manage config files by ourself if lsd is installed by Homebrew
-    (lib.mkIf (enabledByHomebrew "lsd") {
-      xdg.configFile = {
-        "lsd/config.yaml".source = (pkgs.formats.yaml {}).generate "config.yaml" settings;
-        "lsd/colors.yaml".source = (pkgs.formats.yaml {}).generate "colors.yaml" colors;
-      };
-    })
-
-    (lib.mkIf (!enabledByHomebrew "lsd") {
+    (lib.mkIf (!brewed) {
       programs.lsd = {
         enableAliases = true;
         inherit settings colors;
       };
     })
-  ]
+    (lib.mkIf brewed {
+      xdg.configFile."lsd/config.yaml".source = yamlFormat.generate "lsd-config" settings;
+      xdg.configFile."lsd/colors.yaml".source = yamlFormat.generate "lsd-colors" colors;
+
+      programs.zsh.shellAliases = aliases;
+      # programs.fish.shellAliases = aliases;
+      programs.fish.shellAbbrs = aliases;
+    })
+  ];
+}

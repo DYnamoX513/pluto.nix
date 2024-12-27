@@ -2,19 +2,10 @@
   username,
   scanPaths,
   pkgs,
-  osConfig,
   ...
-}: let
-  brewNames = builtins.map (brew: brew.name) osConfig.homebrew.brews;
-  caskNames = builtins.map (brew: brew.name) osConfig.homebrew.casks;
-  homebrewPackages = brewNames ++ caskNames;
-
-  enabledByHomebrew = caskOrFormula: builtins.elem caskOrFormula homebrewPackages;
-in {
+}: {
   # import sub modules
   imports = scanPaths ./.;
-
-  _module.args = {inherit enabledByHomebrew;};
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
