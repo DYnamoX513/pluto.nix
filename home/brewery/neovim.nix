@@ -1,0 +1,57 @@
+{
+  config,
+  lib,
+  pkgs,
+  isFormula,
+  ...
+}:
+# Use customized NvChad-starter
+let
+  brewed = isFormula "neovim";
+  # the path to nvim directory
+  configPath = "${config.home.homeDirectory}/pluto.nix/share/nvim";
+
+  aliases = {
+    vi = "nvim";
+    vim = "nvim";
+    vimdiff = "nvim -d";
+  };
+in
+  lib.mkMerge [
+    {
+      # use nixpkgs-lazygit only if it's not added to brew list
+      programs.neovim.enable = !brewed;
+      xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink configPath;
+    }
+    (lib.mkIf (!brewed) {
+      programs.neovim = {
+        enable = true;
+
+        # defaultEditor = true;
+        viAlias = true;
+        vimAlias = true;
+        vimdiffAlias = true;
+        # These environment variables are needed to build and run binaries
+        # with external package managers like mason.nvim.
+        extraWrapperArgs = with pkgs; [
+          # LIBRARY_PATH is used by gcc before compilation to search directories
+          # containing static and shared libraries that need to be linked to your program.
+          "--suffix"
+          "LIBRARY_PATH"
+          ":"
+          "${lib.makeLibraryPath [stdenv.cc.cc zlib]}"
+
+          # PKG_CONFIG_PATH is used by pkg-config before compilation to search directories
+          # containing .pc files that describe the libraries that need to be linked to your program.
+          "--suffix"
+          "PKG_CONFIG_PATH"
+          ":"
+          "${lib.makeSearchPathOutput "dev" "lib/pkgconfig" [stdenv.cc.cc zlib]}"
+        ];
+      };
+    })
+    (lib.mkIf brewed {
+      programs.zsh.shellAliases = aliases;
+      programs.fish.shellAbbrs = aliases;
+    })
+  ]

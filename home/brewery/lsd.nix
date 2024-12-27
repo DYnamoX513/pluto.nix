@@ -1,7 +1,7 @@
 {
-  config,
   pkgs,
   lib,
+  isFormula,
   ...
 }: let
   settings = {
@@ -64,7 +64,7 @@
     };
   };
 
-  brewed = builtins.elem "lsd" config.brewery.rules.brewList;
+  brewed = isFormula "lsd";
 
   yamlFormat = pkgs.formats.yaml {};
   # aliases that use lsd in PATH
@@ -76,8 +76,8 @@
     lla = "lsd -lA";
     llt = "lsd -l --tree";
   };
-in {
-  config = lib.mkMerge [
+in
+  lib.mkMerge [
     {
       # use nixpkgs-lsd only if it's not added to brew list
       programs.lsd.enable = !brewed;
@@ -96,5 +96,4 @@ in {
       # programs.fish.shellAliases = aliases;
       programs.fish.shellAbbrs = aliases;
     })
-  ];
-}
+  ]

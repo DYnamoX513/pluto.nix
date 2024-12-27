@@ -8,6 +8,8 @@
 }:
 with lib; let
   cfg = config.brewery;
+  isFormula = name: builtins.elem name cfg.rules.brewList;
+  isCask = name: builtins.elem name cfg.rules.caskList;
 in {
   # import sub modules
   imports = scanPaths ./.;
@@ -17,9 +19,11 @@ in {
       default = true;
       type = types.bool;
       description = ''
-        When enabled, if a package is both enabled in home-manager and homebrew (either as a formula or cask),
-        it will be disabled in home-manager and the configuration phase is manually controlled by each
-        submodule.
+        When enabled, if a package is enabled in homebrew (either as a formula or cask),
+        it will be disabled in home-manager and the configuration phase is manually
+        controlled by each submodule.
+        Implementaion for each package is basically the same as home-manager's program module:
+        github.com/nix-community/home-manager/blob/release-24.11/modules/programs/{pkg}.nix
       '';
     };
 
@@ -48,4 +52,10 @@ in {
     brewList = builtins.map (brew: brew.name) osConfig.homebrew.brews;
     caskList = builtins.map (cask: cask.name) osConfig.homebrew.casks;
   };
+
+  config._module.args = {
+    inherit isFormula isCask;
+  };
+
+  # specialArgs = {};
 }
