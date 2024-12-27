@@ -80,15 +80,16 @@
 
       # Can be enabled in home-mananger
       # "fish"
-      # "fzf"
+      "fzf"
       "helix"
-      # "just"
-      # "lazygit"
+      "just"
+      "lazygit"
       "lsd" # ls Deluxe
-      # "rbenv"
-      # "starship"
-      # "yazi" # file browser in terminal
-      # "zoxide" # z
+      "rbenv"
+      "starship"
+      "thefuck"
+      "yazi" # file browser in terminal
+      "zoxide" # z
     ];
 
     # `brew install --cask`

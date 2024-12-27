@@ -34,32 +34,4 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
-  programs.thefuck = {
-    enable = true;
-
-    enableFishIntegration = true;
-    enableZshIntegration = true;
-  };
-
-  programs.fzf = {
-    enable = true;
-
-    enableFishIntegration = true;
-    enableZshIntegration = true;
-  };
-
-  programs.yazi = {
-    enable = true;
-
-    enableFishIntegration = true;
-    enableZshIntegration = true;
-  };
-
-  programs.zoxide = {
-    enable = true;
-
-    enableFishIntegration = true;
-    enableZshIntegration = true;
-  };
 }

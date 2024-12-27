@@ -52,6 +52,10 @@ in
     })
     (lib.mkIf brewed {
       programs.zsh.shellAliases = aliases;
-      programs.fish.shellAbbrs = aliases;
+      programs.fish = with lib;
+        mkMerge [
+          (mkIf (!config.programs.fish.preferAbbrs) {shellAliases = aliases;})
+          (mkIf config.programs.fish.preferAbbrs {shellAbbrs = aliases;})
+        ];
     })
   ]

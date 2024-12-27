@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   isFormula,
@@ -93,7 +94,10 @@ in
       xdg.configFile."lsd/colors.yaml".source = yamlFormat.generate "lsd-colors" colors;
 
       programs.zsh.shellAliases = aliases;
-      # programs.fish.shellAliases = aliases;
-      programs.fish.shellAbbrs = aliases;
+      programs.fish = with lib;
+        mkMerge [
+          (mkIf (!config.programs.fish.preferAbbrs) {shellAliases = aliases;})
+          (mkIf config.programs.fish.preferAbbrs {shellAbbrs = aliases;})
+        ];
     })
   ]
