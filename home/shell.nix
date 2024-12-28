@@ -124,7 +124,7 @@ in {
 
   programs.fish = {
     enable = true;
-    preferAbbrs = true;
+    preferAbbrs = false;
     loginShellInit = lib.strings.concatLines (commonLogin "fish");
     interactiveShellInit = lib.strings.concatLines (
       commonInteractive "fish"
