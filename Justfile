@@ -53,29 +53,37 @@ unset-proxy:
     sudo python3 ./darwin_set_proxy.py unset
     sleep 1
 
+# `nix build & darwin-rebuild switch`. Useful when darwin-rebuild is not installed
+[macos]
+[group('system')]
+install:
+  nix build .#darwinConfigurations.{{hostname}}.system \
+    --extra-experimental-features 'nix-command flakes'
+  ./result/sw/bin/darwin-rebuild switch --flake .#{{hostname}}
+
+# `darwin-rebuild build`
 [macos]
 [group('system')]
 build:
-  nix build .#darwinConfigurations.{{hostname}}.system \
-    --extra-experimental-features 'nix-command flakes'
+  darwin-rebuild build --flake .#{{hostname}}
 
-# `nix build & darwin-rebuild switch`
+# `darwin-rebuild switch`
 [macos]
 [group('system')]
 darwin: # darwin-set-proxy
-  nix build .#darwinConfigurations.{{hostname}}.system \
-    --extra-experimental-features 'nix-command flakes'
+  darwin-rebuild switch --flake .#{{hostname}}
 
-  ./result/sw/bin/darwin-rebuild switch --flake .#{{hostname}}
-
-# --show-trace --verbose
+# `darwin-rebuild switch --show-trace --verbose`
 [group('system')]
 [macos]
 darwin-debug: # darwin-set-proxy
-  nix build .#darwinConfigurations.{{hostname}}.system --show-trace --verbose \
-    --extra-experimental-features 'nix-command flakes'
+  darwin-rebuild switch --flake .#{{hostname}} --show-trace --verbose
 
-  ./result/sw/bin/darwin-rebuild switch --flake .#{{hostname}} --show-trace --verbose
+# `darwin-rebuild --list-generations`
+[macos]
+[group('system')]
+generations:
+  darwin-rebuild --list-generations
 
 ############################################################################
 #
@@ -106,10 +114,10 @@ repl:
 # Remove all generations older than 7 days
 [group('nix')]
 clean:
-  @if [ "$(id -u)" -ne 0 ]; then echo "You(${USER}) may need to switch to root before executing this recipe"; exit -1; fi
+  @if [ "$(id -u)" -ne 0 ]; then echo "You(${USER}) may need to switch to root before executing this recipe"; fi
   @# On Darwin, sudo ... gives the following warning
   @# warning: $HOME ('/Users/pluto') is not owned by you, falling back to the one defined in the 'passwd' file ('/var/root')
-  nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 7d
+  sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 7d
 
 # Garbage collect all unused nix store entries
 [group('nix')]
