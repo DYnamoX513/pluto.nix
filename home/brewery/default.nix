@@ -8,8 +8,14 @@
 }:
 with lib; let
   cfg = config.brewery;
-  isFormula = name: builtins.elem name cfg.rules.brewList;
-  isCask = name: builtins.elem name cfg.rules.caskList;
+  isFormula = name:
+    if builtins.elem name cfg.rules.brewList
+    then builtins.warn "[brewery] ${name} will be installed as a homebrew formula and disabled in home-manager" true
+    else false;
+  isCask = name:
+    if builtins.elem name cfg.rules.caskList
+    then builtins.warn "[brewery] ${name} will be installed as a homebrew cask and disabled in home-manager" true
+    else false;
 in {
   # import sub modules
   imports = scanPaths ./.;

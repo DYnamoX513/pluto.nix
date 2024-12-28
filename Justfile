@@ -53,6 +53,12 @@ unset-proxy:
     sudo python3 ./darwin_set_proxy.py unset
     sleep 1
 
+[macos]
+[group('system')]
+build:
+  nix build .#darwinConfigurations.{{hostname}}.system \
+    --extra-experimental-features 'nix-command flakes'
+
 # `nix build & darwin-rebuild switch`
 [macos]
 [group('system')]

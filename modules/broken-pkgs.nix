@@ -26,7 +26,7 @@ in {
   nixpkgs.overlays = [
     (_: super: let
       removeUnwantedPackages = pname:
-        lib.warn "the ${pname} has been removed on the darwin platform"
+        builtins.warn "${pname} has been removed on the darwin platform"
         super.emptyDirectory;
     in
       lib.genAttrs
