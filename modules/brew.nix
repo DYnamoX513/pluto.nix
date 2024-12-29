@@ -114,7 +114,7 @@
       "font-iosevka-ss08" # PragmataPro flavor
 
       # nerd fonts
-      "font-blex-mono-nerd-font"
+      # "font-blex-mono-nerd-font" # Based on IBM Plex
       "font-iosevka-term-nerd-font"
       "font-iosevka-term-slab-nerd-font"
       "font-symbols-only-nerd-font"

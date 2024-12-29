@@ -29,6 +29,10 @@ add-env key value:
         sed -i '' "s/^{{ key }}=.*/{{ key }}={{ value }}/" {{ dotenv-path }}; \
     fi
 
+# Print `.justenv` contents to stdout
+show-env:
+    cat {{ dotenv-path }}
+
 # Set `.justenv` using the current environment
 [confirm('Existing env entries will be overwritten. Continue?')]
 detect-env: (add-env "_HOSTNAME_JUST_" `just _get-hostname`)
@@ -114,13 +118,13 @@ history:
 repl:
     nix repl -f flake:nixpkgs
 
-# Remove all generations older than 7 days
+# Clean up old generations
 [group('nix')]
-clean:
+clean older-than="7d":
     @if [ "$(id -u)" -ne 0 ]; then echo "You(${USER}) may need to switch to root before executing this recipe"; fi
     @# On Darwin, sudo ... gives the following warning
     @# warning: $HOME ('/Users/pluto') is not owned by you, falling back to the one defined in the 'passwd' file ('/var/root')
-    sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 7d
+    sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than {{ older-than }}
 
 # Garbage collect all unused nix store entries
 [group('nix')]
