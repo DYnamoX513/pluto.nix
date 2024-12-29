@@ -6,11 +6,12 @@
 > [!NOTE]
 > neovim-0.10.3 freezes [#368247](https://github.com/NixOS/nixpkgs/issues/368247) in some
 > circumstances while neovim from Homebrew does not.
-> This issue seems to caused by a bug in tree-sitter 0.24.4, that is fixed in 0.24.5.
+> This issue seems to be caused by a bug in tree-sitter 0.24.4, that is fixed in 0.24.5.
 > Now it's fixed by [#368952](https://github.com/NixOS/nixpkgs/pull/368952).
-> - [ ] We may update the flake inputs once the update is merged into unstable channel and backported to stable channel.
+> - [ ] We may update the flake inputs once the update is merged into the unstable channel
+> and backported to the 24.11 stable channel.
 >
-> Checkout [NixOS Status](https://status.nixos.org)
+> Check out [NixOS Status](https://status.nixos.org)
 
 
 ---
