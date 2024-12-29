@@ -31,17 +31,22 @@
     # There are many ways to reference flake inputs. The most widely used is github:owner/name/reference,
     # which represents the GitHub repository URL + branch/commit-id/tag.
 
+    # Discussions about the differences between nixos-unstable and nixpkgs-unstable:
+    # 1. https://nixos.wiki/wiki/Nix_channels
+    # 2. https://www.reddit.com/r/NixOS/comments/1f46b04/whats_the_difference_between_these_nixosunstable
+    # In brief, nixos-unstable is gated by nixos tests and nixpkgs-unstable is not.
+
     # Official NixOS package source, using nixos's unstable branch by default
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
 
     # for macos
-    # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
-    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    # nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
+    # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
       url = "github:lnl7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
@@ -65,7 +70,6 @@
   outputs = inputs @ {
     self,
     nixpkgs,
-    nixpkgs-darwin,
     nix-darwin,
     home-manager,
     ...
@@ -111,7 +115,7 @@
           ++ extra-modules
           ++ [
             ({lib, ...}: {
-              nixpkgs.pkgs = import nixpkgs-darwin {inherit system;};
+              nixpkgs.pkgs = import nixpkgs {inherit system;};
             })
           ]
           ++ (
