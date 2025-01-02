@@ -30,6 +30,15 @@ args = [
     "--offset-encoding=utf-16",
 ]
 
+[[language]]
+name = "cmake"
+auto-format = true
+language-servers = [{ name = "neocmakelsp" }]
+
+[language-server.neocmakelsp]
+command = "neocmakelsp"
+args = ["--stdio"]
+
 # [[language]]
 # name = "cpp"
 # auto-format = true
