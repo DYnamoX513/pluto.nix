@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  agenix,
+  ...
+}: {
   ##########################################################################
   #
   #  Install all apps and packages here.
@@ -15,6 +19,7 @@
     neovim
     git
     just # use Justfile to simplify nix-darwin's commands
+    agenix.packages.${system}.default # agenix CLI
   ];
 
   # in global environment

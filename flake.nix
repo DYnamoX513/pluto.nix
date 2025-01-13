@@ -12,7 +12,7 @@
   # for more information, see:
   #     https://nixos-and-flakes.thiscute.world/nix-store/add-binary-cache-servers
   nixConfig = {
-    # substituers will be appended to the default substituters when fetching packages
+    # substituters will be appended to the default substituters when fetching packages
     substituters = [
       # "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://mirror.sjtu.edu.cn/nix-channels/store" # SJTUG provides binary cache for nix-darwin
@@ -60,6 +60,19 @@
       # to avoid problems caused by different versions of nixpkgs dependencies.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    agenix = {
+      # url = "github:ryantm/agenix";
+      url = "github:yaxitech/ragenix"; # Rust-agenix
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # my private secrets, it's a private repository, you need to replace it with your own.
+    # use ssh protocol to authenticate via ssh-agent/ssh-key, and shallow clone to save time
+    my-secrets = {
+      url = "git+ssh://git@github.com/DYnamoX513/pluto.nix-secrets.git?shallow=1";
+      flake = false;
+    };
   };
 
   # The `outputs` function will return all the build results of the flake.
@@ -103,7 +116,7 @@
     }:
       nix-darwin.lib.darwinSystem {
         inherit system;
-        specialArgs = specialArgs // {inherit hostname;};
+        specialArgs = specialArgs // {inherit hostname system;};
         modules =
           [
             ./modules/broken-pkgs.nix
