@@ -6,31 +6,21 @@ local M = {}
 
 -- Parse ~/.ssh/config Hosts
 local function parse_ssh_config()
-	--
+	local success, stdout, stderr = wezterm.run_child_process({
+		os.getenv("SHELL"),
+		"-lc",
+		"tssh --list-hosts",
+	})
+
 	local host_list = {}
-	local config_path = os.getenv("HOME") .. "/.ssh/config"
-
-	local file = io.open(config_path, "r")
-	if not file then
-		return host_list -- No config file, empty
+	if not success then
+		return host_list -- failed
 	end
 
-	for line in file:lines() do
-		if line:sub(1, 5) == "Host " then
-			local hosts = {}
-			-- separate by spaces
-			for host in line:gmatch("%S+") do
-				table.insert(hosts, host)
-			end
-			-- Remove the first 'Host' string
-			table.remove(hosts, 1)
-			for _, host in ipairs(hosts) do
-				table.insert(host_list, host)
-			end
-		end
+	for alias in stdout:gmatch('"Alias":%s*"([^"]+)"') do
+		table.insert(host_list, alias)
 	end
 
-	file:close()
 	return host_list
 end
 

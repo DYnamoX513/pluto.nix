@@ -32,7 +32,7 @@
   updateSymLink = from: to: ''
     echo "${from} -> ${to}"
     if [ ! -L "${to}" ] || [ "$(readlink ${to})" != "${from}" ]; then
-        ln -si ${from} ${to}
+        run ln -sib $VERBOSE_ARG ${from} ${to}
     fi
   '';
 in {
