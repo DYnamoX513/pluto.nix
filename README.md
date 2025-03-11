@@ -23,7 +23,7 @@ Inspired by [Nix Darwin Kick-starter](https://github.com/ryan4yin/nix-darwin-kic
 
 ## TODO
 
-- [ ] Secret management: ssh config, ssh-key, OATH (TOTP)key, etc.
+- [x] Secret management: ssh config, ssh-key, OATH (TOTP)key, etc.
 - [ ] Alacritty: Another terminal emulator written in Rust
 - [x] Clean up programs installed by both Homebrew (preferred) and home-manager
 - [ ] Miscellaneous files: .clang-tidy, .clang-format, harper-ls's dictionary, etc.

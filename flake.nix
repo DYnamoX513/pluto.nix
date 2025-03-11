@@ -14,7 +14,8 @@
   nixConfig = {
     # substituters will be appended to the default substituters when fetching packages
     substituters = [
-      # "https://mirrors.ustc.edu.cn/nix-channels/store"
+      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      # "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
       "https://mirror.sjtu.edu.cn/nix-channels/store" # SJTUG provides binary cache for nix-darwin
 
       "https://cache.nixos.org"
@@ -126,11 +127,6 @@
             ./modules/system.nix
           ]
           ++ extra-modules
-          ++ [
-            ({lib, ...}: {
-              nixpkgs.pkgs = import nixpkgs {inherit system;};
-            })
-          ]
           ++ (
             # home manager
             nixpkgs.lib.optionals ((nixpkgs.lib.lists.length home-modules) > 0)

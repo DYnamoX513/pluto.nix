@@ -6,15 +6,6 @@
   # enable flakes globally
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-  # Use this instead of services.nix-daemon.enable if you
-  # don't wan't the daemon service to be managed for you.
-  # nix.useDaemon = true;
-
   nix.package = pkgs.nix;
 
   # do garbage collection weekly to keep disk usage low
@@ -32,7 +23,8 @@
     substituters = [
       # cache mirror located in China
       # status: https://mirrors.ustc.edu.cn/status/
-      # "https://mirrors.ustc.edu.cn/nix-channels/store"
+      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      # "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
       "https://mirror.sjtu.edu.cn/nix-channels/store" # SJTUG provides binary cache for nix-darwin
 
       "https://nix-community.cachix.org"
