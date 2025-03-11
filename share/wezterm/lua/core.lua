@@ -10,7 +10,7 @@ function M.setup(config)
 
 	-- config.color_scheme = "Railscasts (base16)"
 	-- config.color_scheme = "iceberg-dark"
-	-- config.color_scheme = "N0tch2k"
+	config.color_scheme = "Mellifluous"
 
 	-- local uni_font_size = 13.0
 	-- config.font_size = uni_font_size

@@ -8,6 +8,8 @@ theme = "mellow"
 auto-info = true
 bufferline = "multiple"
 true-color = true
+cursorline = true
+color-modes = true
 
 [editor.cursor-shape]
 insert = "bar"
@@ -45,3 +47,8 @@ nnbsp = "␣"
 tab = "→"
 newline = "⏎"
 tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+
+[editor.indent-guides]
+render = true
+character = "┊" # Some characters that work well: "▏", "╎", "┆", "┊", "⸽"
+skip-levels = 1
