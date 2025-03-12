@@ -120,11 +120,8 @@
         specialArgs = specialArgs // {inherit hostname system;};
         modules =
           [
-            ./modules/broken-pkgs.nix
-            ./modules/brew.nix
-            ./modules/host-users.nix
             ./modules/nix-core.nix
-            ./modules/system.nix
+            ./modules/darwin
           ]
           ++ extra-modules
           ++ (
