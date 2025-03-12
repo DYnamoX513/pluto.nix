@@ -14,7 +14,7 @@ let
     extra-modules = [
       # ./host-specifix.nix
       (
-        {pkgs, ...}: {
+        {...}: {
           homebrew = {
             onActivation = {
               # autoUpdate = true; # Fetch the newest stable branch of Homebrew's git repo

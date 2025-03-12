@@ -1,12 +1,14 @@
 {
   config,
-  pkgs,
+  lib,
+  isCask,
   ...
 }:
 # WezTerm is a powerful cross-platform terminal emulator and multiplexerwritten
 # written by @wez and implemented in Rust
 # see https://wezfurlong.org/wezterm/index.html
 let
+  brewed = isCask "wezterm" || isCask "wezterm@nightly";
   # the path to wezterm lua directory
   luaConfigPath = "${config.home.homeDirectory}/pluto.nix/share/wezterm/lua";
 
@@ -51,19 +53,25 @@ let
     -- and finally, return the configuration to wezterm
     return config
   '';
-in {
-  # use homebrew's wezterm@nightly
-  # programs.wezterm = {
-  #   enable = true;
-  #   extraConfig = mainConfig;
-  #   };
-  xdg.configFile."wezterm" = {
-    target = "wezterm/wezterm.lua";
-    text = mainConfig;
-  };
-
-  xdg.configFile."wezterm_lua" = {
-    target = "wezterm/lua";
-    source = config.lib.file.mkOutOfStoreSymlink luaConfigPath;
-  };
-}
+in
+  lib.mkMerge [
+    {
+      programs.wezterm.enable = !brewed;
+      # config lua directory
+      xdg.configFile."wezterm_lua" = {
+        target = "wezterm/lua";
+        source = config.lib.file.mkOutOfStoreSymlink luaConfigPath;
+      };
+    }
+    (lib.mkIf (!brewed)
+      {
+        programs.wezterm.extraConfig = mainConfig;
+      })
+    (lib.mkIf brewed {
+      # use homebrew's wezterm@nightly, set main config by ourselves
+      xdg.configFile."wezterm" = {
+        target = "wezterm/wezterm.lua";
+        text = mainConfig;
+      };
+    })
+  ]
