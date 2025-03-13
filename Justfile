@@ -23,11 +23,11 @@ _get-hostname:
 # Add or update environment variable in `.justenv` file
 add-env key value:
     # INFO: currently only _HOSTNAME_JUST_ is used as hostname in `nix build`
-    if [ ! -f {{ dotenv-path }} ] || ! grep -q "^{{ key }}=" -m 1 {{ dotenv-path }}; then \
+    @if [ ! -f {{ dotenv-path }} ] || ! grep -q "^{{ key }}=" -m 1 {{ dotenv-path }}; then \
         echo "{{ key }}={{ value }}" >> {{ dotenv-path }}; \
     else \
-        sed -i '' "s/^{{ key }}=.*/{{ key }}={{ value }}/" {{ dotenv-path }}; \
-    fi
+        perl -i -pe 's/^{{ key }}=.*/{{ key }}={{ value }}/' {{ dotenv-path }}; \
+    fi # sed -i '' "s/^{{ key }}=.*/{{ key }}={{ value }}/" {{ dotenv-path }};
 
 # Print `.justenv` contents to stdout
 show-env:
