@@ -98,14 +98,6 @@ generations:
 #
 ############################################################################
 
-# `nix build & nixos-rebuild switch`. Useful when nixos-rebuild is not installed
-[group('system')]
-[linux]
-install:
-    nix build .#nixosConfigurations.{{ hostname }}.system \
-      --extra-experimental-features 'nix-command flakes'
-    ./result/sw/bin/nixos-rebuild switch --flake .#{{ hostname }}
-
 # `nixos-rebuild build`
 [group('system')]
 [linux]
