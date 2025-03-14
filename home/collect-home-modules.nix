@@ -4,6 +4,16 @@
   ageSecrets,
   isDarwin,
 }: let
+  coreModules =
+    [
+      ./noarch/core.nix
+    ]
+    ++ (
+      if isDarwin
+      then [./darwin/core.nix]
+      else [./linux/core.nix]
+    );
+
   guiModules =
     if noGui
     then []
@@ -21,7 +31,7 @@
         else []
       );
 in
-  [./noarch/core.nix]
+  coreModules
   ++ guiModules
   ++ cliModules
   ++ (
