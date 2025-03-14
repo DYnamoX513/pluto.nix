@@ -11,8 +11,30 @@ let
     extra-modules = [];
     home-modules =
       [
-        ({...}: {
+        ({
+          config,
+          pkgs,
+          ...
+        }: {
           brewery.enable = false;
+
+          home.packages = with pkgs; [
+            dust
+            fastfetch
+            fd
+            nodejs
+            ripgrep
+
+            # C++ environment
+            gcc13
+            clang-tools
+            cmake
+          ];
+
+          # Reuse MacOS's fonts
+          xdg.dataFile."fonts/mac-fon".source =
+            config.lib.file.mkOutOfStoreSymlink
+            "/mnt/mac/Users/${config.home.username}/Library/Fonts";
         })
       ]
       ++ import ../../home/collect-home-modules.nix {
