@@ -35,8 +35,8 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 **Use this flake**
 
 ```bash
-# Clone this repository
-git clone https://github.com/DYnamoX513/pluto.nix.git && cd pluto.nix
+# Clone this repository to your home directory
+git clone https://github.com/DYnamoX513/pluto.nix.git ~/pluto.nix && cd ~/pluto.nix
 
 # It's strongly recommended to use just to simplify the deployment process
 nix-shell -p just
@@ -60,6 +60,10 @@ just darwin #
 Since [`stateVersion >= 6`](https://daiderd.com/nix-darwin/manual/index.html#opt-environment.darwinConfig),
 you can make a symbolic link to the flake repository in `/etc/nix-darwin`. Then you can run
 `darwin-rebuild switch` from anywhere instead of `darwin-rebuild <cmd> --flake <path-to-flake>`.
+
+**Further readings**
+
+- [Is nix-darwin installing a second Nix? #931](https://github.com/LnL7/nix-darwin/issues/931)
 
 ### Linux
 

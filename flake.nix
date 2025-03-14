@@ -90,9 +90,9 @@
   }: let
     # Supported systems for your flake packages, shell, etc.
     systems = [
-      # "aarch64-linux"
+      "aarch64-linux"
       # "i686-linux"
-      # "x86_64-linux"
+      "x86_64-linux"
       "aarch64-darwin"
       "x86_64-darwin"
     ];
@@ -107,40 +107,57 @@
     specialArgs =
       inputs
       // {
-        inherit username userfullname useremail mkDarwinConfig scanPaths;
+        inherit username userfullname useremail mkDarwinConfig mkLinuxConfig scanPaths;
       };
-    mkDarwinConfig = {
+
+    commonConfig = {
+      libFunction,
+      modulesPath,
+      homeManagerModule,
+    }: {
       system,
       hostname,
       extra-modules ? [],
       home-modules ? [],
     }:
-      nix-darwin.lib.darwinSystem {
+      libFunction {
         inherit system;
         specialArgs = specialArgs // {inherit hostname system;};
         modules =
           [
             ./modules/nix-core.nix
-            ./modules/darwin
+            # platform-specific modules
+            modulesPath
           ]
           ++ extra-modules
           ++ (
-            # home manager
-            nixpkgs.lib.optionals ((nixpkgs.lib.lists.length home-modules) > 0)
-            [
-              home-manager.darwinModules.home-manager
+            nixpkgs.lib.optionals (home-modules != []) [
+              homeManagerModule
               {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                # backup existing config files
-                home-manager.backupFileExtension = "hm-backup";
-
-                home-manager.extraSpecialArgs = specialArgs;
-                home-manager.users."${username}".imports = home-modules;
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  backupFileExtension = "hm-backup";
+                  extraSpecialArgs = specialArgs;
+                  users."${username}".imports = home-modules;
+                };
               }
             ]
           );
       };
+
+    # 平台专用配置
+    mkDarwinConfig = commonConfig {
+      libFunction = nix-darwin.lib.darwinSystem;
+      modulesPath = ./modules/darwin;
+      homeManagerModule = home-manager.darwinModules.home-manager;
+    };
+
+    mkLinuxConfig = commonConfig {
+      libFunction = nixpkgs.lib.nixosSystem;
+      modulesPath = ./modules/linux;
+      homeManagerModule = home-manager.nixosModules.home-manager;
+    };
     # scan for all directories and files end with .nix but not default.nix
     scanPaths = path:
       builtins.map
@@ -161,6 +178,9 @@
   in {
     # generates darwinConfigurations
     darwinConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (map (c: c.darwinConfiguration or {}) hosts);
+
+    # generates nixosConfigurations
+    nixosConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (map (c: c.nixosConfiguration or {}) hosts);
 
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
