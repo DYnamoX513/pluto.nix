@@ -1,6 +1,6 @@
 {
   mkDarwinConfig,
-  mkLinuxConfig,
+  mkNixosConfig,
   ...
 }:
 #############################################################
@@ -57,7 +57,7 @@ let
       isDarwin = true;
     };
   };
-  vm = import ./Hydra-Fedora.nix {inherit mkLinuxConfig;};
+  vm = import ./Hydra-Orbiting.nix {inherit mkNixosConfig;};
 in {
   nixosConfiguration = vm.nixosConfiguration;
   darwinConfiguration.${hostname} = mkDarwinConfig {

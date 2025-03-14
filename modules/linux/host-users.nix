@@ -17,7 +17,10 @@
     # if users.users.<username>.home is not set in nix-darwin
     # See https://github.com/nix-community/home-manager/issues/6036
     home = "/Users/${username}";
+    group = "${username}";
     description = username;
+
+    isNormalUser = true;
   };
 
   nix.settings.trusted-users = [username];

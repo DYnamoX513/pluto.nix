@@ -107,7 +107,7 @@
     specialArgs =
       inputs
       // {
-        inherit username userfullname useremail mkDarwinConfig mkLinuxConfig scanPaths;
+        inherit username userfullname useremail mkDarwinConfig mkNixosConfig scanPaths;
       };
 
     commonConfig = {
@@ -152,12 +152,12 @@
       homeManagerModule = home-manager.darwinModules.home-manager;
     };
 
-    mkLinuxConfig = commonConfig {
+    mkNixosConfig = commonConfig {
       libFunction = nixpkgs.lib.nixosSystem;
       modulesPath = ./modules/linux;
       homeManagerModule = home-manager.nixosModules.home-manager;
     };
-    
+
     # scan for all directories and files end with .nix but not default.nix
     scanPaths = path:
       builtins.map

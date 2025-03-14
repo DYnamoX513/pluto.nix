@@ -1,11 +1,11 @@
-{mkLinuxConfig}:
+{mkNixosConfig}:
 ##########################################################################
 #
-#  Hydra - Rocky Linux 9 (OrbStack VM) inside of MacBook Pro 16-inch
+#  Hydra - NixOS (OrbStack VM) inside of MacBook Pro 16-inch
 #
 ##########################################################################
 let
-  hostname = "Hydra-Rocky9";
+  hostname = "Hydra-Orbiting";
   system = "aarch64-linux";
   modules = {
     extra-modules = [];
@@ -19,11 +19,13 @@ let
           brewery.enable = false;
 
           home.packages = with pkgs; [
+            btop
             dust
             fastfetch
             fd
             nodejs
             ripgrep
+            uv
 
             # C++ environment
             gcc13
@@ -46,7 +48,7 @@ let
       };
   };
 in {
-  nixosConfiguration.${hostname} = mkLinuxConfig {
+  nixosConfiguration.${hostname} = mkNixosConfig {
     inherit system hostname;
     inherit (modules) extra-modules home-modules;
   };
