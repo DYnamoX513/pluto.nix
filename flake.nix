@@ -112,12 +112,11 @@
 
     commonConfig = {
       libFunction,
-      modulesPath,
       homeManagerModule,
     }: {
       system,
       hostname,
-      extra-modules ? [],
+      config-modules ? [],
       home-modules ? [],
     }:
       libFunction {
@@ -126,10 +125,9 @@
         modules =
           [
             ./modules/nix-core.nix
-            # platform-specific modules
-            modulesPath
           ]
-          ++ extra-modules
+          # platform-specific modules
+          ++ config-modules
           ++ (
             nixpkgs.lib.optionals (home-modules != []) [
               homeManagerModule
@@ -148,13 +146,11 @@
 
     mkDarwinConfig = commonConfig {
       libFunction = nix-darwin.lib.darwinSystem;
-      modulesPath = ./modules/darwin;
       homeManagerModule = home-manager.darwinModules.home-manager;
     };
 
     mkNixosConfig = commonConfig {
       libFunction = nixpkgs.lib.nixosSystem;
-      modulesPath = ./modules/linux;
       homeManagerModule = home-manager.nixosModules.home-manager;
     };
 

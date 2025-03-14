@@ -8,7 +8,11 @@ let
   hostname = "Hydra-Orbiting";
   system = "aarch64-linux";
   modules = {
-    extra-modules = [];
+    config-modules = [
+      ./configuration.nix
+      ./orbstack.nix
+      ../../../modules/linux/environment.nix
+    ];
     home-modules =
       [
         ({
@@ -39,7 +43,7 @@ let
             "/mnt/mac/Users/${config.home.username}/Library/Fonts";
         })
       ]
-      ++ import ../../home/collect-home-modules.nix {
+      ++ import ../../../home/collect-home-modules.nix {
         noGui = true;
         noCli = false;
         ageSecrets = false;
@@ -50,6 +54,6 @@ let
 in {
   nixosConfiguration.${hostname} = mkNixosConfig {
     inherit system hostname;
-    inherit (modules) extra-modules home-modules;
+    inherit (modules) config-modules home-modules;
   };
 }

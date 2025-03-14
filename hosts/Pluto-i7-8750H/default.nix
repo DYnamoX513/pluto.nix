@@ -11,8 +11,8 @@ let
   hostname = "Pluto-i7-8750H";
   system = "x86_64-darwin";
   modules = {
-    extra-modules = [
-      # ./host-specifix.nix
+    config-modules = [
+      ../../modules/darwin
       (
         {...}: {
           homebrew = {

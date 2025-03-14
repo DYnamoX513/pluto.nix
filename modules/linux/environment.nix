@@ -26,6 +26,9 @@
     # LC_ALL = "en_US.UTF-8";
   };
 
+  programs.zsh.enable = true;
+  programs.fish.enable = true;
+
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
 
