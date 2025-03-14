@@ -1,4 +1,8 @@
-{mkDarwinConfig, ...}:
+{
+  mkDarwinConfig,
+  mkLinuxConfig,
+  ...
+}:
 #############################################################
 #
 #  Pluto - MacBook Pro 16-inch, Nov 2023
@@ -46,12 +50,16 @@ let
         }
       )
     ];
-    home-modules = [
-      # ./home-specifix.nix
-      ../../home
-    ];
+    home-modules = import ../../home/collect-home-modules.nix {
+      noGui = false;
+      noCli = false;
+      ageSecrets = true;
+      isDarwin = true;
+    };
   };
+  vm = import ./Hydra-Fedora.nix {inherit mkLinuxConfig;};
 in {
+  nixosConfiguration = vm.nixosConfiguration;
   darwinConfiguration.${hostname} = mkDarwinConfig {
     inherit system hostname;
     inherit (modules) extra-modules home-modules;

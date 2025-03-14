@@ -42,10 +42,12 @@ let
         }
       )
     ];
-    home-modules = [
-      # ./home-specifix.nix
-      ../../home
-    ];
+    home-modules = import ../../home/collect-home-modules.nix {
+      noGui = false;
+      noCli = false;
+      ageSecrets = true;
+      isDarwin = true;
+    };
   };
 in {
   darwinConfiguration.${hostname} = mkDarwinConfig (modules // {inherit system hostname;});

@@ -146,7 +146,6 @@
           );
       };
 
-    # 平台专用配置
     mkDarwinConfig = commonConfig {
       libFunction = nix-darwin.lib.darwinSystem;
       modulesPath = ./modules/darwin;
@@ -158,6 +157,7 @@
       modulesPath = ./modules/linux;
       homeManagerModule = home-manager.nixosModules.home-manager;
     };
+    
     # scan for all directories and files end with .nix but not default.nix
     scanPaths = path:
       builtins.map
