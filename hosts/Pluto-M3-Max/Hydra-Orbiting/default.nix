@@ -28,6 +28,7 @@ let
             fastfetch
             fd
             nodejs
+            python3
             ripgrep
             uv
 

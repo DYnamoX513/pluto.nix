@@ -65,9 +65,20 @@ you can make a symbolic link to the flake repository in `/etc/nix-darwin`. Then 
 
 - [Is nix-darwin installing a second Nix? #931](https://github.com/LnL7/nix-darwin/issues/931)
 
-### Linux
+### NixOS
 
-> Working on it...
+```bash
+just nixos
+```
+
+After a successful build, you can bootstrap the system config:
+
+```bash
+sudo mv /etc/nixos /etc/nixos~
+sudo ln -s /path/to/flake /etc/nixos
+
+nixos-rebuild switch
+```
 
 ## TODO
 
@@ -75,7 +86,7 @@ you can make a symbolic link to the flake repository in `/etc/nix-darwin`. Then 
 - [ ] Alacritty: Another terminal emulator written in Rust
 - [x] Clean up programs installed by both Homebrew (preferred) and home-manager
 - [ ] Miscellaneous files: .clang-tidy, .clang-format, harper-ls's dictionary, etc.
-- [ ] Maybe NixOS/RHEL Linux w. Nix in OrbStack?
+- [x] Maybe NixOS~~/RHEL Linux w. Nix~~ in OrbStack?
 
 ## Credits
 
