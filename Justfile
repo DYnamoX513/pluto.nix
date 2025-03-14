@@ -94,6 +94,44 @@ generations:
 
 ############################################################################
 #
+#  Linux related commands
+#
+############################################################################
+
+# `nix build & nixos-rebuild switch`. Useful when nixos-rebuild is not installed
+[group('system')]
+[linux]
+install:
+    nix build .#nixosConfigurations.{{ hostname }}.system \
+      --extra-experimental-features 'nix-command flakes'
+    ./result/sw/bin/nixos-rebuild switch --flake .#{{ hostname }}
+
+# `nixos-rebuild build`
+[group('system')]
+[linux]
+build:
+    nixos-rebuild build --flake .#{{ hostname }}
+
+# `nixos-rebuild switch`
+[group('system')]
+[linux]
+nixos:
+    nixos-rebuild switch --flake .#{{ hostname }}
+
+# `nixos-rebuild switch --show-trace --verbose`
+[group('system')]
+[linux]
+nixos-debug:
+    nixos-rebuild switch --flake .#{{ hostname }} --show-trace --verbose
+
+# `nixos-rebuild --list-generations`
+[group('system')]
+[linux]
+generations:
+    nixos-rebuild --list-generations
+
+############################################################################
+#
 #  nix related commands
 #
 ############################################################################
