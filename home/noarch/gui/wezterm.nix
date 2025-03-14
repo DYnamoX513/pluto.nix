@@ -62,6 +62,11 @@ in
         target = "wezterm/lua";
         source = config.lib.file.mkOutOfStoreSymlink luaConfigPath;
       };
+
+      # no enableFishIntegration for wezterm (24.11)
+      programs.fish.interactiveShellInit = ''
+        eval "$(wezterm shell-completion --shell fish)"
+      '';
     }
     (lib.mkIf (!brewed)
       {

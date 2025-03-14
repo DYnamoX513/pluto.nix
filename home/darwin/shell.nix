@@ -4,28 +4,11 @@
   lib,
   ...
 }: let
-  # cargo
-  cargo = shell:
-    if shell == "fish"
-    then "fish_add_path -p $HOME/.cargo/bin" # prepend by default
-    else ''. "$HOME/.cargo/env"'';
-
   # orbstack
   orbstack = shell: ''
     # Added by OrbStack: command-line tools and integration
     source ~/.orbstack/shell/init.${shell} 2>/dev/null || :
   '';
-
-  # neovim mason installed binaries
-  mason = shell:
-    if shell == "fish"
-    then
-      # -a = append, but $fish_user_path is prepended to $PATH
-      # results in $fish_user_path -> [mason] -> $PATH
-      "fish_add_path -a $HOME/.local/share/nvim/mason/bin"
-    else
-      # prepend
-      "export PATH=$HOME/.local/share/nvim/mason/bin:$PATH";
 
   # ~/Library/Application\ Support/JetBrains/Toolbox/scripts/... E.g., clion
 
@@ -43,9 +26,6 @@
   # export LC_CTYPE="en_US.UTF-8"
   # export LC_ALL="en_US.UTF-8"
   #        '';
-
-  # wezterm completion
-  wezterm = shell: ''eval "$(wezterm shell-completion --shell ${shell})"'';
 
   # TODO: separate Darwin specific configurations into sub-modules
 
@@ -82,29 +62,11 @@
     # ];
     (homebrew shell)
     (preferNixOverBrew shell)
-    (cargo shell)
-    (mason shell)
     (orbstack shell)
   ];
-  commonInteractive = shell: [
-  ];
+  commonInteractive = shell: [];
 in {
   programs.zsh = {
-    enable = true;
-    # instead, use zsh-autocompletion https://github.com/marlonrichert/zsh-autocomplete
-    # enableCompletion = false;
-    # zsh-autosuggestions
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    oh-my-zsh = {
-      enable = true;
-      theme = "robbyrussell";
-      plugins = [
-        "git"
-        # easily prefix your current or previous commands with sudo by pressing esc twice
-        "sudo"
-      ];
-    };
     plugins = [
       # {
       #   name = "zsh-autocomplete";
@@ -117,19 +79,14 @@ in {
       # }
     ];
     profileExtra = lib.strings.concatLines (commonLogin "zsh");
-    initExtra = lib.strings.concatLines (
-      commonInteractive "zsh"
-    );
+    initExtra = lib.strings.concatLines (commonInteractive "zsh");
   };
 
   programs.fish = {
-    enable = true;
-    preferAbbrs = false;
     loginShellInit = lib.strings.concatLines (commonLogin "fish");
     interactiveShellInit = lib.strings.concatLines (
       commonInteractive "fish"
       ++ [
-        (wezterm "fish") # no enableFishIntegration for wezterm (24.11)
         homebrewCompletionForFish
         # fancy fish greeting
         # "set -gu fish_greeting hello"

@@ -1,11 +1,23 @@
 {
+  config,
   username,
-  scanPaths,
   pkgs,
   ...
 }: {
-  # import sub modules
-  imports = scanPaths ./.;
+  imports = [
+    ./brewery.nix
+  ];
+
+  _module.args = {
+    isFormula = name:
+      if builtins.elem name config.brewery.rules.brewList
+      then builtins.warn "[brewery] ${name} will be installed as a homebrew formula and disabled in home-manager" true
+      else false;
+    isCask = name:
+      if builtins.elem name config.brewery.rules.caskList
+      then builtins.warn "[brewery] ${name} will be installed as a homebrew cask and disabled in home-manager" true
+      else false;
+  };
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.

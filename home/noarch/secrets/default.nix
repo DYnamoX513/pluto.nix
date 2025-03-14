@@ -4,7 +4,6 @@
   agenix,
   my-secrets,
   lib,
-  system,
   ...
 }: let
   userReadable = {
