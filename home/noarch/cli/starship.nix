@@ -7,7 +7,7 @@
   brewed = isFormula "starship";
   tomlFormat = pkgs.formats.toml {};
   settings = {
-    format = "$directory$fill$all$line_break$shell$character";
+    format = "$hostname$directory$fill$all$line_break$shell$character";
     right_format = "$time";
     time = {
       disabled = false;
@@ -28,6 +28,8 @@
     };
     hostname = {
       disabled = false;
+      ssh_symbol = "🪷 ";
+      style = "italic purple";
     };
     shell = {
       disabled = false;
