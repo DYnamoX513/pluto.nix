@@ -12,23 +12,6 @@
 
   # ~/Library/Application\ Support/JetBrains/Toolbox/scripts/... E.g., clion
 
-  #    # language - English
-  #    lang = shell:
-  #    if shell == "fish" then
-  #        ''
-  #    set -gx LANG en_US.UTF-8
-  #    set -gx LC_CTYPE en_US.UTF-8
-  #    set -gx LC_ALL en_US.UTF-8
-  #    ''
-  #    else
-  #        ''
-  # export LANG="en_US.UTF-8"
-  # export LC_CTYPE="en_US.UTF-8"
-  # export LC_ALL="en_US.UTF-8"
-  #        '';
-
-  # TODO: separate Darwin specific configurations into sub-modules
-
   # Homebrew shellenv:
   # This line not only sets PATH, but other variables like FPATH (zsh),
   # HOMEBREW_PREFIX, HOMEBREW_CELLAR and HOMEBREW_REPOSITORY as well.
@@ -53,9 +36,9 @@
     end
   '';
 
-  # brew + orbstack + cargo + language
+  # brew + orbstack
   commonLogin = shell: [
-    # make sure eval "$(brew shellenv)" is called before sourcing oh-my-zsh.sh
+    # Make sure eval "$(brew shellenv)" is called before sourcing oh-my-zsh.sh
     # See https://docs.brew.sh/Shell-Completion
     # initExtraBeforeCompInit = lib.strings.concatLines [
     #   (homebrew "zsh") # only works in interactive shell
@@ -67,6 +50,8 @@
   commonInteractive = shell: [];
 in {
   programs.zsh = {
+    # Instead, use zsh-autocompletion https://github.com/marlonrichert/zsh-autocomplete
+    # enableCompletion = false;
     plugins = [
       # {
       #   name = "zsh-autocomplete";

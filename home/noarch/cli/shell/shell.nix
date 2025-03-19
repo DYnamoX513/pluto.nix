@@ -3,9 +3,13 @@
   cargo = shell:
     if shell == "fish"
     then "fish_add_path -p $HOME/.cargo/bin" # prepend by default
-    else ''. "$HOME/.cargo/env"'';
+    else ''
+      if [[ -f "$HOME/.cargo/env" ]]; then
+          . "$HOME/.cargo/env"
+      fi
+    '';
 
-  # neovim mason installed binaries
+  # Neovim mason installed binaries
   mason = shell:
     if shell == "fish"
     then
@@ -16,7 +20,7 @@
       # prepend
       "export PATH=$HOME/.local/share/nvim/mason/bin:$PATH";
 
-  # brew + orbstack + cargo + language
+  # cargo + mason language
   commonLogin = shell: [
     (cargo shell)
     (mason shell)
@@ -25,8 +29,6 @@
 in {
   programs.zsh = {
     enable = true;
-    # instead, use zsh-autocompletion https://github.com/marlonrichert/zsh-autocomplete
-    # enableCompletion = false;
     # zsh-autosuggestions
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
