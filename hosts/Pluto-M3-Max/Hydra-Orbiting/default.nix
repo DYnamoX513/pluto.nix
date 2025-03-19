@@ -12,6 +12,19 @@ let
       ./configuration.nix
       ./orbstack.nix
       ../../../modules/linux/environment.nix
+      (
+        {pkgs, ...}: {
+          environment.systemPackages = with pkgs; [
+            unzip
+            wget
+          ];
+
+          users.defaultUserShell = pkgs.zsh;
+          # https://github.com/nix-community/nix-ld
+          # Run unpatched dynamic binaries on NixOS.
+          programs.nix-ld.enable = true;
+        }
+      )
     ];
     home-modules =
       [
@@ -32,14 +45,18 @@ let
             ripgrep
             uv
 
+            # common utilities
+            rsync
+
             # C++ environment
             gcc13
             clang-tools
             cmake
+            gnumake
           ];
 
           # Reuse MacOS's fonts
-          xdg.dataFile."fonts/mac-fon".source =
+          xdg.dataFile."fonts/mac-fonts".source =
             config.lib.file.mkOutOfStoreSymlink
             "/mnt/mac/Users/${config.home.username}/Library/Fonts";
         })
