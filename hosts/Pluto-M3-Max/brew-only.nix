@@ -32,7 +32,7 @@ let
       meta =
         pkgs.emptyDirectory.meta
         // {
-          mainProgram = pkgs.${name}.meta.mainProgram;
+          inherit (pkgs.${name}.meta) mainProgram;
         };
     };
 

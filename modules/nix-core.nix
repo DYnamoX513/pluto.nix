@@ -3,9 +3,6 @@
   lib,
   ...
 }: {
-  # enable flakes globally
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
   nix.package = pkgs.nix;
 
   # do garbage collection weekly to keep disk usage low
@@ -14,11 +11,15 @@
     options = lib.mkDefault "--delete-older-than 7d";
   };
 
-  # Disable auto-optimise-store because of this issue:
-  #   https://github.com/NixOS/nix/issues/7273
-  # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx' to '/nix/store/.links/xxxx': File exists"
   nix.settings = {
+    # enable flakes globally
+    experimental-features = ["nix-command" "flakes"];
+
+    # Disable auto-optimise-store because of this issue:
+    #   https://github.com/NixOS/nix/issues/7273
+    # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx' to '/nix/store/.links/xxxx': File exists"
     auto-optimise-store = false;
+
     # substituers that will be considered before the official ones(https://cache.nixos.org)
     substituters = [
       # cache mirror located in China
