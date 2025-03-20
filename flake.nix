@@ -199,6 +199,8 @@
     devShells = forAllSystems (system: let
       pkgs = nixpkgs-stable-24_11.legacyPackages.${system};
     in {
+      # eval "$(nix develop ~/pluto.nix#gcc7 --command bash -c 'declare -xp')"
+      # to apply environment variables to the current shell
       gcc7 = pkgs.mkShell {
         packages = with pkgs; [
           gcc7
@@ -206,9 +208,7 @@
           # gnumake
         ];
 
-        shellHook = ''
-          fish -C "gcc --version"
-        '';
+        # shellHook = ''fish -C "gcc --version"'';
       };
     });
 
