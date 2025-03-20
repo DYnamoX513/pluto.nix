@@ -1,8 +1,4 @@
-{
-  mkDarwinConfig,
-  mkNixosConfig,
-  ...
-}:
+{mkDarwinConfig, ...} @ args:
 #############################################################
 #
 #  Pluto - MacBook Pro 16-inch, Nov 2023
@@ -55,7 +51,7 @@ let
     ageSecrets = true;
     isDarwin = true;
   };
-  vm = import ./Hydra-Orbiting {inherit mkNixosConfig;};
+  vm = import ./Hydra-Orbiting args;
 in {
   nixosConfiguration = vm.nixosConfiguration;
   darwinConfiguration.${hostname} = mkDarwinConfig {

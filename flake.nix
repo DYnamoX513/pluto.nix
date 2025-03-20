@@ -40,9 +40,8 @@
     # Official NixOS package source, using nixos's unstable branch by default
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-stable-24_11.url = "github:nixos/nixpkgs/nixos-24.11";
 
-    # for macos
     # nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
     # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
@@ -84,6 +83,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixpkgs-stable-24_11,
     nix-darwin,
     home-manager,
     ...
@@ -118,10 +118,27 @@
       hostname,
       config-modules ? [],
       home-modules ? [],
-    }:
+      # E.g, { stable = { url = ...; }; } will be evaluated into { pkgs-stable = import stable {} } and merged into specialArgs
+      extra-nixpkgs ? {},
+    }: let
+      specialArgsEx =
+        specialArgs
+        // {
+          inherit hostname system;
+        }
+        // nixpkgs.lib.mapAttrs'
+        (name: value:
+          builtins.warn "Extra nixpkgs source: pkgs-${name} (${value.shortRev})" {
+            name = "pkgs-${name}";
+            value = import value {
+              inherit system;
+            };
+          })
+        extra-nixpkgs;
+    in
       libFunction {
         inherit system;
-        specialArgs = specialArgs // {inherit hostname system;};
+        specialArgs = specialArgsEx;
         modules =
           [
             ./modules/nix-core.nix
@@ -136,7 +153,7 @@
                   useGlobalPkgs = true;
                   useUserPackages = true;
                   backupFileExtension = "hm-backup";
-                  extraSpecialArgs = specialArgs;
+                  extraSpecialArgs = specialArgsEx;
                   users."${username}".imports = home-modules;
                 };
               }
@@ -177,6 +194,23 @@
 
     # generates nixosConfigurations
     nixosConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (map (c: c.nixosConfiguration or {}) hosts);
+
+    # gcc7 environment for developing programs running in old CICD pipeline
+    devShells = forAllSystems (system: let
+      pkgs = nixpkgs-stable-24_11.legacyPackages.${system};
+    in {
+      gcc7 = pkgs.mkShell {
+        packages = with pkgs; [
+          gcc7
+          # cmake
+          # gnumake
+        ];
+
+        shellHook = ''
+          fish -C "gcc --version"
+        '';
+      };
+    });
 
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
