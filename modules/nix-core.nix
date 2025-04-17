@@ -26,7 +26,7 @@
       # status: https://mirrors.ustc.edu.cn/status/
       "https://mirrors.ustc.edu.cn/nix-channels/store"
       # "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
-      "https://mirror.sjtu.edu.cn/nix-channels/store" # SJTUG provides binary cache for nix-darwin
+      # "https://mirror.sjtu.edu.cn/nix-channels/store" # SJTUG provides binary cache for nix-darwin
 
       "https://nix-community.cachix.org"
     ];
