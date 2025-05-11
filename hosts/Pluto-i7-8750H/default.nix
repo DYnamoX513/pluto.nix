@@ -25,11 +25,9 @@ let
 
             # `brew install --cask`
             casks = [
-              # GPU-accelerated terminal emulator, written in Rust
-              "alacritty"
               # Derived from IBM Plex Mono, with ligature
-              "font-lilex"
-              "font-lilex-nerd-font"
+              # "font-lilex"
+              # "font-lilex-nerd-font"
               # Menu bar manager
               "jordanbaird-ice"
               "monitorcontrol"
