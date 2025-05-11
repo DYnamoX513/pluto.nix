@@ -108,6 +108,7 @@
       "stats" # beautiful system monitor
       # "vivaldi" # Vivaldi browser
       "wezterm@nightly" # need manually update through 'brew update wezterm@nightly'
+      "ghostty"
 
       # fonts
       "font-ibm-plex-mono"
@@ -115,13 +116,13 @@
       "font-ibm-plex-serif"
       "font-input"
       "font-iosevka"
-      "font-iosevka-slab"
+      # "font-iosevka-slab"
       "font-iosevka-ss08" # PragmataPro flavor
 
       # nerd fonts
       # "font-blex-mono-nerd-font" # Based on IBM Plex
       "font-iosevka-term-nerd-font"
-      "font-iosevka-term-slab-nerd-font"
+      # "font-iosevka-term-slab-nerd-font"
       "font-symbols-only-nerd-font"
     ];
   };
