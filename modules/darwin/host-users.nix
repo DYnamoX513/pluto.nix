@@ -23,4 +23,7 @@
   };
 
   nix.settings.trusted-users = [username];
+
+  # Since 25.11, some nix-darwin options apply to the `primaryUser` instead of the user running `darwin-rebuild`.
+  system.primaryUser = username;
 }

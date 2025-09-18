@@ -37,6 +37,8 @@
   # But on macOS, homebrew has a much larger selection of apps than nixpkgs, especially for GUI apps!
   homebrew = {
     enable = true;
+    # The user that owns the Homebrew installation, if not specified, default to system.primaryUser
+    # user =
 
     onActivation = {
       # autoUpdate = true; # Fetch the newest stable branch of Homebrew's git repo
