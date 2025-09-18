@@ -93,7 +93,6 @@
       "lsd" # ls Deluxe
       "rbenv"
       "starship"
-      "thefuck"
       "yazi" # file browser in terminal
       "zoxide" # z
     ];
@@ -121,7 +120,7 @@
 
       # nerd fonts
       # "font-blex-mono-nerd-font" # Based on IBM Plex
-      "font-iosevka-term-nerd-font"
+      # "font-iosevka-term-nerd-font"
       # "font-iosevka-term-slab-nerd-font"
       "font-symbols-only-nerd-font"
     ];
