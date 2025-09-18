@@ -62,9 +62,10 @@
     };
 
     agenix = {
-      # url = "github:ryantm/agenix";
-      url = "github:yaxitech/ragenix"; # Rust-agenix
+      url = "github:ryantm/agenix";
+      # url = "github:yaxitech/ragenix"; # Rust-agenix
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
 
     # my private secrets, it's a private repository, you need to replace it with your own.

@@ -4,6 +4,10 @@
 > Currently Nixpkgs-unstable is really UNSTABLE, or at least less stable than homebrew, on Darwin.
 >
 > 2025-03-13: nix-darwin - `config.system.stateVersion` has been safely updated from 5 to 6.
+>
+> 2025-09-18: `ragenix` is replaced by `agenix`:
+> [ragenix does not build on Darwin 25.05 #159](https://github.com/yaxitech/ragenix/issues/159).
+
 
 > [!NOTE]
 > neovim-0.10.3 freezes [#368247](https://github.com/NixOS/nixpkgs/issues/368247) in some
