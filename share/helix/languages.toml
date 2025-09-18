@@ -76,3 +76,8 @@ formatter = { command = 'prettier', args = ["--parser", "typescript"] }
 [[language]]
 name = "tsx"
 formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+
+[[language]]
+name = "yaml"
+auto-format = true
+formatter = { command = "yamlfmt", args = ['-'] }
