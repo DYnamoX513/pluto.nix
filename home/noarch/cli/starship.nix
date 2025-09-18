@@ -59,7 +59,7 @@ in
         source = tomlFormat.generate "starship-config" settings;
       };
 
-      programs.zsh.initExtra = ''
+      programs.zsh.initContent = ''
         if [[ $TERM != "dumb" ]]; then
           eval "$(starship init zsh)"
         fi

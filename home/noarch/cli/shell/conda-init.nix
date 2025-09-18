@@ -34,6 +34,6 @@
     # <<< conda initialize <<<
   '';
 in {
-  programs.zsh.initExtra = condaZsh;
+  programs.zsh.initContent = condaZsh;
   programs.fish.interactiveShellInit = condaFish;
 }

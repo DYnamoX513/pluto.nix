@@ -43,7 +43,7 @@ in {
     };
     plugins = [];
     profileExtra = lib.strings.concatLines (commonLogin "zsh");
-    initExtra = lib.strings.concatLines (commonInteractive "zsh");
+    initContent = lib.strings.concatLines (commonInteractive "zsh");
   };
 
   programs.fish = {

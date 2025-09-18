@@ -43,7 +43,7 @@ in
     })
 
     (mkIf brewed {
-      programs.zsh.initExtra = bashIntegration;
+      programs.zsh.initContent = bashIntegration;
       programs.fish.interactiveShellInit =
         fishIntegration;
     })
