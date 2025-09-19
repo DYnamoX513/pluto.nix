@@ -103,7 +103,7 @@
     casks = [
       "iina" # video player
       "keycastr" # show keystroke visualiser
-      "neovide" # neovim GUI
+      "neovide-app" # neovim GUI
       "openinterminal" # for Finder
       "raycast" # (HotKey: alt/option + space)search, caculate and run scripts(with many plugins)
       "stats" # beautiful system monitor
