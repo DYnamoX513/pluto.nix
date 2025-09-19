@@ -19,7 +19,7 @@ in
     })
 
     (mkIf brewed {
-      programs.zsh.initContent = ''
+      programs.zsh.initContent = mkOrder 851 ''
         eval "$(zoxide init zsh)"
       '';
 

@@ -22,7 +22,8 @@ in
       # Note, since fzf unconditionally binds C-r we use `mkOrder` to make the
       # initialization show up a bit earlier. This is to make initialization of
       # other history managers, like mcfly or atuin, take precedence.
-      programs.zsh.initContent = mkOrder 200 ''
+      # (after oh-my-zsh)
+      programs.zsh.initContent = mkOrder 910 ''
         if [[ $options[zle] = on ]]; then
           eval "$(fzf --zsh)"
         fi

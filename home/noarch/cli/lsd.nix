@@ -85,7 +85,8 @@ in
     }
     (lib.mkIf (!brewed) {
       programs.lsd = {
-        enableAliases = true;
+        enableFishIntegration = true;
+        enableZshIntegration = true;
         inherit settings colors;
       };
     })

@@ -17,7 +17,7 @@ in {
         it will be disabled in home-manager and the configuration phase is manually
         controlled by each submodule.
         Implementaion for each package is basically the same as home-manager's program module:
-        github.com/nix-community/home-manager/blob/release-24.11/modules/programs/{pkg}.nix
+        github.com/nix-community/home-manager/blob/{tag}/modules/programs/{pkg}.nix
       '';
     };
 

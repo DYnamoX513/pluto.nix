@@ -20,14 +20,12 @@ with lib; let
   '';
 
   fishIntegration = ''
-    function ${cfg.shellWrapperName}
-      set tmp (mktemp -t "yazi-cwd.XXXXX")
-      yazi $argv --cwd-file="$tmp"
-      if set cwd (cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-        builtin cd -- "$cwd"
-      end
-      rm -f -- "$tmp"
+    set -l tmp (mktemp -t "yazi-cwd.XXXXX")
+    command yazi $argv --cwd-file="$tmp"
+    if set cwd (cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+      builtin cd -- "$cwd"
     end
+    rm -f -- "$tmp"
   '';
 in
   mkMerge [
@@ -44,7 +42,6 @@ in
 
     (mkIf brewed {
       programs.zsh.initContent = bashIntegration;
-      programs.fish.interactiveShellInit =
-        fishIntegration;
+      programs.fish.functions.${cfg.shellWrapperName} = fishIntegration;
     })
   ]
