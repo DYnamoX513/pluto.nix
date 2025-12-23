@@ -42,8 +42,8 @@ in {
   };
 
   config.brewery.rules = lib.mkIf (pkgs.stdenv.isDarwin && cfg.enable) {
-    brewList = builtins.map (brew: brew.name) osConfig.homebrew.brews;
-    caskList = builtins.map (cask: cask.name) osConfig.homebrew.casks;
+    brewList = builtins.map (brew: brew.name or brew) osConfig.homebrew.brews;
+    caskList = builtins.map (cask: cask.name or cask) osConfig.homebrew.casks;
   };
 
   # specialArgs = {};

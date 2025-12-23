@@ -1,6 +1,7 @@
 {
   username,
   hostname,
+  lib,
   ...
 }:
 #############################################################
@@ -22,7 +23,10 @@
     description = username;
   };
 
-  nix.settings.trusted-users = [username];
+  nix.settings.trusted-users = lib.mkMerge [
+    (lib.mkBefore ["root"])
+    (lib.mkAfter [username])
+  ];
 
   # Since 25.11, some nix-darwin options apply to the `primaryUser` instead of the user running `darwin-rebuild`.
   system.primaryUser = username;

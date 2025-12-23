@@ -1,5 +1,7 @@
 {
+  config,
   pkgs,
+  lib,
   agenix,
   ...
 }: {
@@ -15,12 +17,20 @@
   # But on macOS, it's less stable than homebrew.
   #
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
-  environment.systemPackages = with pkgs; [
-    neovim
-    git
-    just # use Justfile to simplify nix-darwin's commands
-    agenix.packages.${system}.default # agenix CLI
-  ];
+  environment.systemPackages = with pkgs; let
+    brewedNeovim =
+      builtins.any
+      (brew: (brew.name or brew) == "neovim")
+      (config.homebrew.brews or []);
+  in
+    [
+      git
+      just # use Justfile to simplify nix-darwin's commands
+      agenix.packages.${system}.default # agenix CLI
+    ]
+    ++ lib.optionals (!brewedNeovim) [
+      neovim
+    ];
 
   # in global environment
   environment.variables = {
