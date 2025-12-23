@@ -14,7 +14,7 @@
     helix
     git
     just
-    agenix.packages.${system}.default # agenix CLI
+    agenix.packages.${stdenv.hostPlatform.system}.default # agenix CLI
   ];
 
   # in global environment

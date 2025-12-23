@@ -66,12 +66,14 @@
       # url = "github:yaxitech/ragenix"; # Rust-agenix
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
+      # inputs.darwin.follows = "";
     };
 
     # my private secrets, it's a private repository, you need to replace it with your own.
     # use ssh protocol to authenticate via ssh-agent/ssh-key, and shallow clone to save time
     my-secrets = {
-      url = "git+ssh://git@github.com/DYnamoX513/pluto.nix-secrets.git?shallow=1";
+      # url = "git+ssh://git@github.com/DYnamoX513/pluto.nix-secrets.git?shallow=1";
+      url = "git+ssh://git@github.com/DYnamoX513/pluto.nix-secrets.git";
       flake = false;
     };
   };
