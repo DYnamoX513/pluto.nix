@@ -14,6 +14,7 @@
     helix
     git
     just
+    nh
     agenix.packages.${stdenv.hostPlatform.system}.default # agenix CLI
   ];
 

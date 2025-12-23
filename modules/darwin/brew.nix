@@ -26,6 +26,7 @@
     [
       git
       just # use Justfile to simplify nix-darwin's commands
+      nh
       agenix.packages.${stdenv.hostPlatform.system}.default # agenix CLI
     ]
     ++ lib.optionals (!brewedNeovim) [

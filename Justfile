@@ -2,7 +2,7 @@
 
 set dotenv-path := "./.justenv"
 
-dotenv-path := justfile_directory() / ".justenv"
+dotenv_file := justfile_directory() / ".justenv"
 
 # set dotenv-required
 
@@ -23,22 +23,34 @@ _get-hostname:
 # Add or update environment variable in `.justenv` file
 add-env key value:
     # INFO: currently only _HOSTNAME_JUST_ is used as hostname in `nix build`
-    @if [ ! -f {{ dotenv-path }} ] || ! grep -q "^{{ key }}=" -m 1 {{ dotenv-path }}; then \
-        echo "{{ key }}={{ value }}" >> {{ dotenv-path }}; \
-    else \
-        perl -i -pe 's/^{{ key }}=.*/{{ key }}={{ value }}/' {{ dotenv-path }}; \
-    fi # sed -i '' "s/^{{ key }}=.*/{{ key }}={{ value }}/" {{ dotenv-path }};
+    @tmp="$(mktemp)" && \
+      if [ -f "{{ dotenv_file }}" ]; then \
+        awk -v k="{{ key }}" -v v="{{ value }}" 'BEGIN{p=k"=";found=0} {if(index($0,p)==1){print p v;found=1}else{print}} END{if(!found) print p v}' "{{ dotenv_file }}" > "$tmp"; \
+      else \
+        printf '%s=%s\n' "{{ key }}" "{{ value }}" > "$tmp"; \
+      fi && \
+      mkdir -p "$(dirname "{{ dotenv_file }}")" && \
+      mv "$tmp" "{{ dotenv_file }}"
 
 # Print `.justenv` contents to stdout
 show-env:
-    cat {{ dotenv-path }}
+    @if [ -f {{ dotenv_file }} ]; then cat {{ dotenv_file }}; else echo "{{ dotenv_file }} does not exist"; fi
 
 # Set `.justenv` using the current environment
-[confirm('Existing env entries will be overwritten. Continue?')]
+[confirm('Existing _HOSTNAME_JUST_ will be updated. Continue?')]
 detect-env: (add-env "_HOSTNAME_JUST_" `just _get-hostname`)
     @# just --quiet add-env "_HOSTNAME_JUST_" `just _get-hostname`
 
-hostname := env_var_or_default("_HOSTNAME_JUST_", "")
+# 1.15.0 Deprecated alias for env(key, default)
+# hostname := env_var_or_default("_HOSTNAME_JUST_", "")
+
+hostname := env("_HOSTNAME_JUST_", "")
+
+_require-hostname:
+    @if [ -z "{{ hostname }}" ]; then \
+        echo "ERROR: hostname is empty. Run: just detect-env (or export _HOSTNAME_JUST_)" >&2; \
+        exit 1; \
+    fi
 
 ############################################################################
 #
@@ -63,7 +75,7 @@ unset-proxy:
 # `nix build & darwin-rebuild switch`. Useful when darwin-rebuild is not installed
 [group('system')]
 [macos]
-install:
+install: _require-hostname
     nix build .#darwinConfigurations.{{ hostname }}.system \
       --extra-experimental-features 'nix-command flakes'
     ./result/sw/bin/darwin-rebuild switch --flake .#{{ hostname }}
@@ -71,19 +83,19 @@ install:
 # `darwin-rebuild build`
 [group('system')]
 [macos]
-build:
+build: _require-hostname
     darwin-rebuild build --flake .#{{ hostname }}
 
 # `darwin-rebuild switch`
 [group('system')]
 [macos]
-darwin:
+darwin: _require-hostname
     darwin-rebuild switch --flake .#{{ hostname }}
 
 # `darwin-rebuild switch --show-trace --verbose`
 [group('system')]
 [macos]
-darwin-debug:
+darwin-debug: _require-hostname
     darwin-rebuild switch --flake .#{{ hostname }} --show-trace --verbose
 
 # `darwin-rebuild --list-generations`
@@ -101,19 +113,19 @@ generations:
 # `nixos-rebuild build`
 [group('system')]
 [linux]
-build:
+build: _require-hostname
     nixos-rebuild build --flake .#{{ hostname }}
 
 # `nixos-rebuild switch`
 [group('system')]
 [linux]
-nixos:
+nixos: _require-hostname
     nixos-rebuild switch --flake .#{{ hostname }}
 
 # `nixos-rebuild switch --show-trace --verbose`
 [group('system')]
 [linux]
-nixos-debug:
+nixos-debug: _require-hostname
     nixos-rebuild switch --flake .#{{ hostname }} --show-trace --verbose
 
 # `nixos-rebuild --list-generations`
@@ -174,3 +186,29 @@ fmt:
 [group('nix')]
 gcroot:
     ls -al /nix/var/nix/gcroots/auto/
+
+############################################################################
+#
+#  Experimental nh commands
+#
+############################################################################
+
+[group('nh')]
+[macos]
+nh-build: _require-hostname
+    nh darwin build -H {{ hostname }} {{ justfile_directory() }}
+
+[group('nh')]
+[macos]
+nh-switch: _require-hostname
+    nh darwin switch -H {{ hostname }} {{ justfile_directory() }}
+
+[group('nh')]
+[linux]
+nh-build: _require-hostname
+    nh os build -H {{ hostname }} {{ justfile_directory() }}
+
+[group('nh')]
+[linux]
+nh-switch: _require-hostname
+    nh os switch -H {{ hostname }} {{ justfile_directory() }}
