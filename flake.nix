@@ -41,6 +41,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable-24_11.url = "github:nixos/nixpkgs/nixos-24.11";
+    # Fix "clang-tools: clangd broken after staging-next 2025-11-02 merge": https://github.com/NixOS/nixpkgs/issues/463367
+    nixpkgs-stable-25_05.url = "github:nixos/nixpkgs/nixos-25.05";
 
     # nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
     # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-unstable";

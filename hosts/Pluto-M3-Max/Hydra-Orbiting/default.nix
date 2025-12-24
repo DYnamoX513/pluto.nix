@@ -1,6 +1,6 @@
 {
   mkNixosConfig,
-  # nixpkgs-stable-24_11,
+  nixpkgs-stable-25_05,
   ...
 }:
 ##########################################################################
@@ -35,7 +35,7 @@ let
         ({
           config,
           pkgs,
-          # pkgs-stable-24_11,
+          pkgs-stable-25_05,
           ...
         }: {
           brewery.enable = false;
@@ -56,7 +56,8 @@ let
 
               # C++ environment
               gcc13
-              clang-tools
+              # clang-tools
+              pkgs-stable-25_05.llvmPackages_21.clang-tools
               cmake
               gnumake
             ])
@@ -85,7 +86,7 @@ in {
     inherit (modules) config-modules home-modules;
     extra-nixpkgs = {
       # mapped to pkgs-* and merged into specialArgs
-      # stable-24_11 = nixpkgs-stable-24_11;
+      stable-25_05 = nixpkgs-stable-25_05; # -> use pkgs-stable-25_05 in modules
     };
   };
 }

@@ -19,6 +19,11 @@
 >
 > Check out [NixOS Status](https://status.nixos.org)
 
+> [!NOTE]
+> 2025-11-02: `clang-tools` (notably `clangd`) is broken in nixpkgs-unstable after the
+> 2025-11-02 `staging-next` merge: [#463367](https://github.com/NixOS/nixpkgs/issues/463367).
+> Workaround: pin `nixos-25.05` as an extra nixpkgs input and use `llvmPackages_21.clang-tools`.
+
 ---
 
 ## Deployment

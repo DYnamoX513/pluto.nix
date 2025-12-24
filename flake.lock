@@ -136,6 +136,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-stable-25_05": {
+      "locked": {
+        "lastModified": 1766399428,
+        "narHash": "sha256-vS6LSOMDOB3s+L6tqw9IGujxnmUAZQnEG+Vi640LayI=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "a6c3a6141ec1b367c58ead3f7f846c772a25f4e5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -143,7 +159,8 @@
         "my-secrets": "my-secrets",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-stable-24_11": "nixpkgs-stable-24_11"
+        "nixpkgs-stable-24_11": "nixpkgs-stable-24_11",
+        "nixpkgs-stable-25_05": "nixpkgs-stable-25_05"
       }
     },
     "systems": {
