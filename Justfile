@@ -189,26 +189,40 @@ gcroot:
 
 ############################################################################
 #
-#  Experimental nh commands
+#  nh (Nix Helper) commands
 #
 ############################################################################
 
+# Build the system configuration using nh (macOS)
 [group('nh')]
 [macos]
 nh-build: _require-hostname
     nh darwin build -H {{ hostname }} {{ justfile_directory() }}
 
+# Build and apply the system configuration using nh (macOS)
 [group('nh')]
 [macos]
 nh-switch: _require-hostname
     nh darwin switch -H {{ hostname }} {{ justfile_directory() }}
 
+# Build the system configuration using nh (Linux)
 [group('nh')]
 [linux]
 nh-build: _require-hostname
     nh os build -H {{ hostname }} {{ justfile_directory() }}
 
+# Build and apply the system configuration using nh (Linux)
 [group('nh')]
 [linux]
 nh-switch: _require-hostname
     nh os switch -H {{ hostname }} {{ justfile_directory() }}
+
+# Clean up unneeded Nix store paths (garbage collection) using nh
+[group('nh')]
+nh-clean keep-days="7":
+    nh clean all --keep-since {{ keep-days }}d --ask
+
+# Search for packages in Nixpkgs using nh
+[group('nh')]
+nh-search query:
+    nh search {{ query }}
