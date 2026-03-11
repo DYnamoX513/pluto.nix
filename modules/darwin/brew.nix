@@ -4,7 +4,29 @@
   lib,
   agenix,
   ...
-}: {
+}: let
+  # Homebrew Mirror
+  homebrew_mirror_env = {
+    # tuna mirror
+    # HOMEBREW_API_DOMAIN = "https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api";
+    # HOMEBREW_BOTTLE_DOMAIN = "https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles";
+    # HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git";
+    # HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git";
+
+    # ustc mirror
+    HOMEBREW_API_DOMAIN = "https://mirrors.ustc.edu.cn/homebrew-bottles/api";
+    HOMEBREW_BOTTLE_DOMAIN = "https://mirrors.ustc.edu.cn/homebrew-bottles";
+    HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.ustc.edu.cn/brew.git";
+    HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.ustc.edu.cn/homebrew-core.git";
+  };
+
+  homebrew_env_script =
+    lib.attrsets.foldlAttrs (
+      acc: name: value:
+        acc + "export ${name}=${value}\n"
+    ) "\n"
+    homebrew_mirror_env;
+in {
   ##########################################################################
   #
   #  Install all apps and packages here.
@@ -34,13 +56,22 @@
     ];
 
   # in global environment
-  environment.variables = {
-    # EDITOR = "nvim";
-    EDITOR = "hx";
-    LANG = "en_US.UTF-8";
-    LC_CTYPE = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
-  };
+  environment.variables =
+    {
+      # EDITOR = "nvim";
+      EDITOR = "hx";
+      LANG = "en_US.UTF-8";
+      LC_CTYPE = "en_US.UTF-8";
+      LC_ALL = "en_US.UTF-8";
+    }
+    // homebrew_mirror_env;
+
+  # Set environment variables for nix-darwin before run `brew bundle`.
+  system.activationScripts.homebrew.text = lib.mkBefore ''
+    echo >&2 "Setting Homebrew mirror environment variables..."
+    echo >&2 '${homebrew_env_script}'
+    ${homebrew_env_script}
+  '';
 
   # WARN: To make this work, homebrew need to be installed manually, see https://brew.sh
   #
