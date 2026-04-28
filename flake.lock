@@ -71,11 +71,11 @@
     "my-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1736673168,
-        "narHash": "sha256-nbx+HpsSeifABLGnEG3wxdA+/w8hfo1QSZEui2a2vl8=",
+        "lastModified": 1777370481,
+        "narHash": "sha256-flLUF7RLZLvZkTvjS0djWfkpduaTOLzUmvzyvXdDSIc=",
         "ref": "refs/heads/main",
-        "rev": "69354b99ade7451f045a127ac2318050992fa9aa",
-        "revCount": 3,
+        "rev": "1cf70e70787f1880046912f07a997f9eb2ffe7d4",
+        "revCount": 5,
         "type": "git",
         "url": "ssh://git@github.com/DYnamoX513/pluto.nix-secrets.git"
       },
