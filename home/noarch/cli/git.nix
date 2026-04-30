@@ -24,6 +24,8 @@
     #   }
     # ];
 
+    signing.format = null;
+
     settings = {
       user = {
         name = userfullname;

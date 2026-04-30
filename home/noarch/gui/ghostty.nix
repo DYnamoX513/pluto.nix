@@ -93,21 +93,23 @@ in
       # use homebrew's ghostty, set main config and themes by ourselves
       xdg.configFile =
         {
-          "ghostty/config".source = (pkgs.formats.keyValue {
-            # support duplicate keys
-            listsAsDuplicateKeys = true;
-            # key = value
-            mkKeyValue = lib.generators.mkKeyValueDefault {} " = ";
-          }).generate "ghostty-config"
-          settings;
+          "ghostty/config".source =
+            (pkgs.formats.keyValue {
+              # support duplicate keys
+              listsAsDuplicateKeys = true;
+              # key = value
+              mkKeyValue = lib.generators.mkKeyValueDefault {} " = ";
+            }).generate "ghostty-config"
+            settings;
         }
         // lib.mapAttrs' (name: theme:
           lib.nameValuePair "ghostty/themes/${name}" {
-            source = (pkgs.formats.keyValue {
-              listsAsDuplicateKeys = true;
-              mkKeyValue = lib.generators.mkKeyValueDefault {} " = ";
-            }).generate "ghostty-theme-${name}"
-            theme;
+            source =
+              (pkgs.formats.keyValue {
+                listsAsDuplicateKeys = true;
+                mkKeyValue = lib.generators.mkKeyValueDefault {} " = ";
+              }).generate "ghostty-theme-${name}"
+              theme;
           })
         themes;
     })

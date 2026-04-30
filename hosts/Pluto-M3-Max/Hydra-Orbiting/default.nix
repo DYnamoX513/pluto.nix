@@ -1,8 +1,4 @@
-{
-  mkNixosConfig,
-  nixpkgs-stable-25_05,
-  ...
-}:
+{mkNixosConfig, ...}:
 ##########################################################################
 #
 #  Hydra - NixOS (OrbStack VM) inside of MacBook Pro 16-inch
@@ -35,7 +31,6 @@ let
         ({
           config,
           pkgs,
-          pkgs-stable-25_05,
           ...
         }: {
           brewery.enable = false;
@@ -56,8 +51,7 @@ let
 
               # C++ environment
               gcc13
-              # clang-tools
-              pkgs-stable-25_05.llvmPackages_21.clang-tools
+              clang-tools
               cmake
               gnumake
             ])
@@ -84,9 +78,6 @@ in {
   nixosConfiguration.${hostname} = mkNixosConfig {
     inherit system hostname;
     inherit (modules) config-modules home-modules;
-    extra-nixpkgs = {
-      # mapped to pkgs-* and merged into specialArgs
-      stable-25_05 = nixpkgs-stable-25_05; # -> use pkgs-stable-25_05 in modules
-    };
+    extra-nixpkgs = {};
   };
 }

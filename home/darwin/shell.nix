@@ -15,7 +15,7 @@
   # Homebrew shellenv:
   # This line not only sets PATH, but other variables like FPATH (zsh),
   # HOMEBREW_PREFIX, HOMEBREW_CELLAR and HOMEBREW_REPOSITORY as well.
-  homebrew = shell: ''eval "$(${osConfig.homebrew.brewPrefix}/brew shellenv ${shell})"'';
+  homebrew = shell: ''eval "$(${osConfig.homebrew.prefix}/bin/brew shellenv ${shell})"'';
   # However, as Homebrew `prepend` its bin paths, this can cause problems if a package
   # e.g., zoxide, is installed by both Homebrew and nix. (Especially when shell
   # integration is enabled in home-manager)

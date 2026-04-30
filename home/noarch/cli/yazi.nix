@@ -30,7 +30,11 @@ with lib; let
 in
   mkMerge [
     {
-      programs.yazi.enable = !brewed;
+      programs.yazi = {
+        enable = !brewed;
+        # shellWrapperName = "yy";
+        shellWrapperName = "y";
+      };
     }
 
     (mkIf (!brewed) {
