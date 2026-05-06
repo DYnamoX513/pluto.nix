@@ -27,7 +27,15 @@ in
       programs.neovim = {
         enable = true;
 
+        withRuby = false;
+        withPython3 = false;
+
+        # Fix error like "installing file '.config/nvim/init.lua' outside $HOME"
+        # See https://github.com/nix-community/home-manager/issues/8938
+        sideloadInitLua = true;
+
         # defaultEditor = true;
+
         viAlias = true;
         vimAlias = true;
         vimdiffAlias = true;
