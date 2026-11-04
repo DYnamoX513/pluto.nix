@@ -1,16 +1,12 @@
 {
-  lib,
   userfullname,
   useremail,
   ...
 }: {
-  # `programs.git` will generate the config file: ~/.config/git/config
-  # to make git use this config file, `~/.gitconfig` should not exist!
-  #
-  #    https://git-scm.com/docs/git-config#Documentation/git-config.txt---global
-  home.activation.removeExistingGitconfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    run rm -f ~/.gitconfig
-  '';
+  # Home Manager writes Git configuration to $XDG_CONFIG_HOME/git/config.
+  # Git also reads ~/.gitconfig afterwards, so its settings can override these.
+  # Preserve existing user configuration; migrate conflicting settings manually.
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt---global
 
   programs.git = {
     enable = true;
