@@ -89,6 +89,21 @@ sudo ln -s /path/to/flake /etc/nixos
 nixos-rebuild switch
 ```
 
+## Development shells
+
+The legacy GCC 7 shell is exported only for `aarch64-linux`, for use inside
+`Hydra-Orbiting` (the OrbStack NixOS guest on the M3 Mac):
+
+```bash
+# Run inside the NixOS guest, not on macOS
+nix develop ~/pluto.nix#gcc7
+gcc --version
+exit
+```
+
+The compiler comes from the locked Nixpkgs 24.11 input; this shell does not
+recreate the complete historical CI environment.
+
 ## TODO
 
 - [x] Secret management: ssh config, ssh-key, OATH (TOTP)key, etc.

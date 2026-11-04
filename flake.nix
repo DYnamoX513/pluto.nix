@@ -197,12 +197,11 @@
     # generates nixosConfigurations
     nixosConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (map (c: c.nixosConfiguration or {}) hosts);
 
-    # gcc7 environment for developing programs running in old CICD pipeline
-    devShells = forAllSystems (system: let
-      pkgs = nixpkgs-stable-24_11.legacyPackages.${system};
+    # Legacy GCC 7 environment for the old CI/CD pipeline, used inside Hydra-Orbiting.
+    devShells.aarch64-linux = let
+      pkgs = nixpkgs-stable-24_11.legacyPackages.aarch64-linux;
     in {
-      # eval "$(nix develop ~/pluto.nix#gcc7 --command bash -c 'declare -xp')"
-      # to apply environment variables to the current shell
+      # Run inside the OrbStack NixOS guest: nix develop ~/pluto.nix#gcc7
       gcc7 = pkgs.mkShell {
         packages = with pkgs; [
           gcc7
@@ -212,7 +211,7 @@
 
         # shellHook = ''fish -C "gcc --version"'';
       };
-    });
+    };
 
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
