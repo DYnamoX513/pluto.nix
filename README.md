@@ -58,12 +58,17 @@ just show-env
 
 ```bash
 # just install # first run (darwin-rebuild is not in PATH)
-just darwin #
+just build  # build without activation or sudo
+just darwin # build and activate; prompts for sudo authentication
 ```
+
+Run these recipes as your normal user. `just install`, `just darwin`, and
+`just darwin-debug` invoke `sudo` for `darwin-rebuild switch`, because system
+activation requires root. `just install` runs its initial `nix build` without sudo.
 
 Since [`stateVersion >= 6`](https://daiderd.com/nix-darwin/manual/index.html#opt-environment.darwinConfig),
 you can make a symbolic link to the flake repository in `/etc/nix-darwin`. Then you can run
-`darwin-rebuild switch` from anywhere instead of `darwin-rebuild <cmd> --flake <path-to-flake>`.
+`sudo darwin-rebuild switch` from anywhere instead of `darwin-rebuild <cmd> --flake <path-to-flake>`.
 
 **Further readings**
 

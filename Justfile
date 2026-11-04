@@ -78,7 +78,7 @@ unset-proxy:
 install: _require-hostname
     nix build .#darwinConfigurations.{{ hostname }}.system \
       --extra-experimental-features 'nix-command flakes'
-    ./result/sw/bin/darwin-rebuild switch --flake .#{{ hostname }}
+    sudo ./result/sw/bin/darwin-rebuild switch --flake .#{{ hostname }}
 
 # `darwin-rebuild build`
 [group('system')]
@@ -86,17 +86,17 @@ install: _require-hostname
 build: _require-hostname
     darwin-rebuild build --flake .#{{ hostname }}
 
-# `darwin-rebuild switch`
+# `sudo darwin-rebuild switch`
 [group('system')]
 [macos]
 darwin: _require-hostname
-    darwin-rebuild switch --flake .#{{ hostname }}
+    sudo "$(command -v darwin-rebuild)" switch --flake .#{{ hostname }}
 
-# `darwin-rebuild switch --show-trace --verbose`
+# `sudo darwin-rebuild switch --show-trace --verbose`
 [group('system')]
 [macos]
 darwin-debug: _require-hostname
-    darwin-rebuild switch --flake .#{{ hostname }} --show-trace --verbose
+    sudo "$(command -v darwin-rebuild)" switch --flake .#{{ hostname }} --show-trace --verbose
 
 # `darwin-rebuild --list-generations`
 [group('system')]
