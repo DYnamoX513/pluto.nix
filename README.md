@@ -8,7 +8,6 @@
 > 2025-09-18: `ragenix` is replaced by `agenix`:
 > [ragenix does not build on Darwin 25.05 #159](https://github.com/yaxitech/ragenix/issues/159).
 
-
 > [!NOTE]
 > The old Neovim 0.10.3 freeze ([#368247](https://github.com/NixOS/nixpkgs/issues/368247))
 > was resolved by the tree-sitter update in
@@ -28,6 +27,7 @@
 For MacOS, please refer to [nix-darwin prerequisites](https://github.com/LnL7/nix-darwin#prerequisites).
 
 E.g, [Determinate nix-installer](https://github.com/DeterminateSystems/nix-installer) (not Determinate Nix!)
+
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
   sh -s -- install
@@ -86,6 +86,20 @@ sudo ln -s /path/to/flake /etc/nixos
 
 nixos-rebuild switch
 ```
+
+#### OrbStack configuration ownership
+
+`Hydra-Orbiting` is an OrbStack Linux machine with a shared kernel, not an
+independent VM. Its configuration lives in `hosts/Pluto-M3-Max/Hydra-Orbiting`:
+
+- `default.nix`: flake host entry point and system/Home Manager module selection.
+- `configuration.nix`: maintained host configuration, including hostname, user,
+  networking, the host's OrbStack CA, and the existing `stateVersion = "24.11"`.
+- `orbstack.nix`: vendored snapshot of OrbStack-generated integration. It is
+  imported once by `configuration.nix`; keep local customizations out of it.
+
+The former `incus.nix` contained only hostname configuration, which is now managed
+in `configuration.nix`.
 
 ## Development shells
 

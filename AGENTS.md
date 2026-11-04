@@ -24,5 +24,6 @@
 - `hosts/Pluto-M3-Max/brew-only.nix` is not imported; the active package-selection mechanism is `home/noarch/brewery.nix`.
 - Neovim, Helix, and WezTerm Lua configs use live out-of-store symlinks under `~/pluto.nix/share`; relocating the checkout or using a worktree does not retarget them.
 - `share/nvim` is a separate Git submodule, not ordinary parent-repository content.
-- `hosts/Pluto-M3-Max/Hydra-Orbiting/{orbstack,incus}.nix` are generated and may be overwritten; keep durable customizations in non-generated modules.
+- `hosts/Pluto-M3-Max/Hydra-Orbiting/orbstack.nix` is a vendored snapshot of OrbStack-generated integration, not automatically synchronized with OrbStack updates. Keep local customizations in `configuration.nix`; hostname is managed there, without a separate `incus.nix`. Snapshot provenance and refresh guidance are in README.
+- Hydra's `/etc/nixos` currently points to `/home/pluto/pluto.nix`. External writes through that path can reach the checkout; inspect Git changes after OrbStack updates. Do not change the guest directory layout or regenerate files into the checkout merely to validate a change.
 - State versions are compatibility settings, not dependency versions: Darwin `6`, Home Manager/NixOS `24.11`. Do not bump them as part of an input update.

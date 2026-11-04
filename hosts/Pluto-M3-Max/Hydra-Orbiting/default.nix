@@ -1,7 +1,7 @@
 {mkNixosConfig, ...}:
 ##########################################################################
 #
-#  Hydra - NixOS (OrbStack VM) inside of MacBook Pro 16-inch
+#  Hydra - NixOS (OrbStack machine) inside of MacBook Pro 16-inch
 #
 ##########################################################################
 let
@@ -10,7 +10,6 @@ let
   modules = {
     config-modules = [
       ./configuration.nix
-      ./orbstack.nix
       ../../../modules/linux/environment.nix
       (
         {pkgs, ...}: {
