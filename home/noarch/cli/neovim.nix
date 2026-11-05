@@ -9,7 +9,7 @@
 let
   brewed = isFormula "neovim";
   # the path to nvim directory
-  configPath = "${config.home.homeDirectory}/pluto.nix/share/nvim";
+  configPath = "${config.dotfilesRoot}/share/nvim";
 
   aliases = {
     vi = "nvim";

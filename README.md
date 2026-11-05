@@ -101,6 +101,21 @@ independent VM. Its configuration lives in `hosts/Pluto-M3-Max/Hydra-Orbiting`:
 The former `incus.nix` contained only hostname configuration, which is now managed
 in `configuration.nix`.
 
+## Live configuration paths
+
+Neovim, Helix, and WezTerm Lua modules use live out-of-store symlinks under
+`dotfilesRoot`, a Home Manager option defaulting to `${home.homeDirectory}/pluto.nix`.
+To use another checkout, add an override to the host's `home-modules` list:
+
+```nix
+{
+  dotfilesRoot = "/Users/pluto/src/pluto.nix";
+}
+```
+
+Use an absolute string path, not `~`, a relative string, or a Nix path literal such
+as `./.`.
+
 ## Development shells
 
 The legacy GCC 7 shell is exported only for `aarch64-linux`, for use inside

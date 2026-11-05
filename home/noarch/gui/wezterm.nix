@@ -10,7 +10,7 @@
 let
   brewed = isCask "wezterm" || isCask "wezterm@nightly";
   # the path to wezterm lua directory
-  luaConfigPath = "${config.home.homeDirectory}/pluto.nix/share/wezterm/lua";
+  luaConfigPath = "${config.dotfilesRoot}/share/wezterm/lua";
 
   default_prog =
     if config.programs.fish.enable
