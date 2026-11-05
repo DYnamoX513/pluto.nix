@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   lib,
   isCask,
@@ -23,6 +22,9 @@ let
     macos-option-as-alt = "left";
     adjust-cell-width = "-5%"; # slightly narrower
     window-padding-balance = "true";
+    # Note that shell integration will automatically set the cursor to a bar at a prompt, regardless of this configuration.
+    # You can disable that behavior by specifying shell-integration-features = no-cursor or disabling shell integration entirely.
+    shell-integration-features = "no-cursor,";
   };
 
   # Ghostty theme files ported from the Palebloom JetBrains IDE theme
@@ -80,37 +82,11 @@ let
       selection-foreground = "#eaeaff";
     };
   };
-in
-  lib.mkMerge [
-    {
-      programs.ghostty.enable = !brewed;
-    }
-    (lib.mkIf (!brewed) {
-      programs.ghostty.settings = settings;
-      programs.ghostty.themes = themes;
-    })
-    (lib.mkIf brewed {
-      # use homebrew's ghostty, set main config and themes by ourselves
-      xdg.configFile =
-        {
-          "ghostty/config".source =
-            (pkgs.formats.keyValue {
-              # support duplicate keys
-              listsAsDuplicateKeys = true;
-              # key = value
-              mkKeyValue = lib.generators.mkKeyValueDefault {} " = ";
-            }).generate "ghostty-config"
-            settings;
-        }
-        // lib.mapAttrs' (name: theme:
-          lib.nameValuePair "ghostty/themes/${name}" {
-            source =
-              (pkgs.formats.keyValue {
-                listsAsDuplicateKeys = true;
-                mkKeyValue = lib.generators.mkKeyValueDefault {} " = ";
-              }).generate "ghostty-theme-${name}"
-              theme;
-          })
-        themes;
-    })
-  ]
+in {
+  programs.ghostty = {
+    enable = true;
+    # Keep Home Manager's configuration generation without installing a Nix package.
+    package = lib.mkIf brewed null;
+    inherit settings themes;
+  };
+}

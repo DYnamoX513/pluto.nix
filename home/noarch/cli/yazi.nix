@@ -1,51 +1,16 @@
 {
-  config,
   lib,
   isFormula,
   ...
-}:
-with lib; let
+}: let
   brewed = isFormula "yazi";
-
-  cfg = config.programs.yazi;
-  bashIntegration = ''
-    function ${cfg.shellWrapperName}() {
-      local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
-      yazi "$@" --cwd-file="$tmp"
-      if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-        builtin cd -- "$cwd"
-      fi
-      rm -f -- "$tmp"
-    }
-  '';
-
-  fishIntegration = ''
-    set -l tmp (mktemp -t "yazi-cwd.XXXXX")
-    command yazi $argv --cwd-file="$tmp"
-    if set cwd (cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-      builtin cd -- "$cwd"
-    end
-    rm -f -- "$tmp"
-  '';
-in
-  mkMerge [
-    {
-      programs.yazi = {
-        enable = !brewed;
-        # shellWrapperName = "yy";
-        shellWrapperName = "y";
-      };
-    }
-
-    (mkIf (!brewed) {
-      programs.yazi = {
-        enableFishIntegration = true;
-        enableZshIntegration = true;
-      };
-    })
-
-    (mkIf brewed {
-      programs.zsh.initContent = bashIntegration;
-      programs.fish.functions.${cfg.shellWrapperName} = fishIntegration;
-    })
-  ]
+in {
+  programs.yazi = {
+    enable = true;
+    package = lib.mkIf brewed null;
+    shellWrapperName = "y";
+    # Upstream wrappers invoke yazi through PATH, so they also work with Homebrew.
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+  };
+}

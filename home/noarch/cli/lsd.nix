@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   isFormula,
   ...
@@ -67,7 +66,6 @@
 
   brewed = isFormula "lsd";
 
-  yamlFormat = pkgs.formats.yaml {};
   # aliases that use lsd in PATH
   aliases = {
     ls = "lsd";
@@ -80,20 +78,17 @@
 in
   lib.mkMerge [
     {
-      # use nixpkgs-lsd only if it's not added to brew list
-      programs.lsd.enable = !brewed;
-    }
-    (lib.mkIf (!brewed) {
       programs.lsd = {
-        enableFishIntegration = true;
-        enableZshIntegration = true;
+        enable = true;
+        package = lib.mkIf brewed null;
+        # Upstream aliases still reference pkgs.lsd even when package is null.
+        enableBashIntegration = !brewed;
+        enableFishIntegration = !brewed;
+        enableZshIntegration = !brewed;
         inherit settings colors;
       };
-    })
+    }
     (lib.mkIf brewed {
-      xdg.configFile."lsd/config.yaml".source = yamlFormat.generate "lsd-config" settings;
-      xdg.configFile."lsd/colors.yaml".source = yamlFormat.generate "lsd-colors" colors;
-
       programs.zsh.shellAliases = aliases;
       programs.fish = with lib;
         mkMerge [

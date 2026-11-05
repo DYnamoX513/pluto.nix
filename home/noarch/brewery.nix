@@ -13,11 +13,10 @@ in {
       default = pkgs.stdenv.isDarwin;
       type = types.bool;
       description = ''
-        When enabled, if a package is enabled in homebrew (either as a formula or cask),
-        it will be disabled in home-manager and the configuration phase is manually
-        controlled by each submodule.
-        Implementaion for each package is basically the same as home-manager's program module:
-        github.com/nix-community/home-manager/blob/{tag}/modules/programs/{pkg}.nix
+        When enabled, modules can query the declared Homebrew formulae and casks
+        to avoid installing the same package through Home Manager.
+        Modules that support a null package can still manage configuration through
+        Home Manager; other modules provide configuration and shell integration locally.
       '';
     };
 

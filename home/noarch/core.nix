@@ -11,11 +11,11 @@
   _module.args = {
     isFormula = name:
       if builtins.elem name config.brewery.rules.brewList
-      then builtins.warn "[brewery] ${name} will be installed as a homebrew formula and disabled in home-manager" true
+      then builtins.warn "[brewery] ${name}: package installation is managed by Homebrew (formula)" true
       else false;
     isCask = name:
       if builtins.elem name config.brewery.rules.caskList
-      then builtins.warn "[brewery] ${name} will be installed as a homebrew cask and disabled in home-manager" true
+      then builtins.warn "[brewery] ${name}: package installation is managed by Homebrew (cask)" true
       else false;
   };
 
