@@ -12,7 +12,7 @@
   # for more information, see:
   #     https://nixos-and-flakes.thiscute.world/nix-store/add-binary-cache-servers
   nixConfig = {
-    # substituters will be appended to the default substituters when fetching packages
+    # Sets the substituter list for this flake; extra-substituters would append instead.
     substituters = [
       "https://mirrors.ustc.edu.cn/nix-channels/store"
       # "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
@@ -35,7 +35,8 @@
     # Discussions about the differences between nixos-unstable and nixpkgs-unstable:
     # 1. https://nixos.wiki/wiki/Nix_channels
     # 2. https://www.reddit.com/r/NixOS/comments/1f46b04/whats_the_difference_between_these_nixosunstable
-    # In brief, nixos-unstable is gated by nixos tests and nixpkgs-unstable is not.
+    # Both branches have release gates: nixos-unstable targets NixOS,
+    # while nixpkgs-unstable serves Nixpkgs users across platforms.
 
     # Official NixOS package source, using nixos's unstable branch by default
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -54,7 +55,7 @@
       url = "github:nix-community/home-manager/master";
       # url = "github:nix-community/home-manager/release-24.11";
 
-      # The `follows` keyword in inputs is used for inheritance.
+      # `follows` aliases this dependency to the root flake's nixpkgs input.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with the `inputs.nixpkgs` of the current flake,
       # to avoid problems caused by different versions of nixpkgs dependencies.
       inputs.nixpkgs.follows = "nixpkgs";
@@ -69,7 +70,7 @@
     };
 
     # my private secrets, it's a private repository, you need to replace it with your own.
-    # use ssh protocol to authenticate via ssh-agent/ssh-key, and shallow clone to save time
+    # use SSH to authenticate via ssh-agent/ssh-key
     my-secrets = {
       # url = "git+ssh://git@github.com/DYnamoX513/pluto.nix-secrets.git?shallow=1";
       url = "git+ssh://git@github.com/DYnamoX513/pluto.nix-secrets.git";
@@ -80,7 +81,7 @@
   # The `outputs` function will return all the build results of the flake.
   # A flake can have many use cases and different types of outputs,
   # parameters in `outputs` are defined in `inputs` and can be referenced by their names.
-  # However, `self` is an exception, this special parameter points to the `outputs` itself (self-reference)
+  # `self` references this flake, including its outputs and source metadata.
   # The `@` syntax here is used to alias the attribute set of the inputs's parameter, making it convenient to use inside the function.
   outputs = inputs @ {
     self,
@@ -120,7 +121,7 @@
       hostname,
       config-modules ? [],
       home-modules ? [],
-      # E.g, { stable = { url = ...; }; } will be evaluated into { pkgs-stable = import stable {} } and merged into specialArgs
+      # Maps extra Nixpkgs inputs (e.g. { stable = nixpkgs-stable-24_11; }) to pkgs-stable in specialArgs.
       extra-nixpkgs ? {},
     }: let
       specialArgsEx =

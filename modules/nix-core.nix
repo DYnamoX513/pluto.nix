@@ -20,7 +20,7 @@
     # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx' to '/nix/store/.links/xxxx': File exists"
     auto-optimise-store = false;
 
-    # substituers that will be considered before the official ones(https://cache.nixos.org)
+    # Available binary caches; cache priority, not list order, determines preference.
     substituters = [
       # cache mirror located in China
       # status: https://mirrors.ustc.edu.cn/status/
@@ -29,7 +29,7 @@
       # "https://mirror.sjtu.edu.cn/nix-channels/store" # SJTUG provides binary cache for nix-darwin
 
       "https://nix-community.cachix.org"
-      # fallback to the official cache
+      # official cache
       "https://cache.nixos.org"
     ];
     trusted-public-keys = [

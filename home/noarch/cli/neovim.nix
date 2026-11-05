@@ -19,7 +19,7 @@ let
 in
   lib.mkMerge [
     {
-      # use nixpkgs-lazygit only if it's not added to brew list
+      # Use Nix Neovim only when Homebrew does not manage it.
       programs.neovim.enable = !brewed;
       xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink configPath;
     }
@@ -43,8 +43,9 @@ in
         # These environment variables are needed to build and run binaries
         # with external package managers like mason.nvim.
         #
-        # LD_LIBRARY_PATH is also needed to run the non-FHS binaries downloaded by mason.nvim.
-        # it will be set by nix-ld, so we do not need to set it here again.
+        # On NixOS, nix-ld uses NIX_LD_LIBRARY_PATH for unpatched executables.
+        # Nix-built interpreters do not automatically use those paths for native modules;
+        # they may need a dedicated wrapper. nix-ld does not supply build-time headers.
         # extraWrapperArgs = with pkgs; [
         #   # LIBRARY_PATH is used by gcc before compilation to search directories
         #   # containing static and shared libraries that need to be linked to your program.
