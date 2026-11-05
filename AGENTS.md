@@ -24,6 +24,7 @@
 ## Gotchas
 
 - Flake resolution may require SSH access to the private `my-secrets` input, even when the selected host disables secret modules.
+- SSH work-secret links are managed by Home Manager through `mkOutOfStoreSymlink` to agenix's runtime paths. Keep plaintext and identity contents out of Nix expressions/store inputs, do not use `force` to bypass private-key collisions, and do not decrypt secrets or activate their agent merely to validate configuration changes.
 - Darwin requires an existing Homebrew installation.
 - `hosts/Pluto-M3-Max/brew-only.nix` is not imported; the active package-selection mechanism is `home/noarch/brewery.nix`.
 - Neovim, Helix, and WezTerm Lua configs use live out-of-store symlinks under the Home Manager `dotfilesRoot` option (default: `${home.homeDirectory}/pluto.nix`). Override it with an absolute string in a host's home modules to select another checkout; relocation or a worktree does not automatically retarget links.

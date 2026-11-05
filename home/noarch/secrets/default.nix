@@ -4,40 +4,25 @@
   agenix,
   my-secrets,
   lib,
+  pkgs,
   ...
 }: let
-  userReadable = {
-    mode = "0400";
-    # owner = config.home.username;
-    # group = config.home.username;
-  };
   userSshDir = "${config.home.homeDirectory}/.ssh";
 
   mkSshSecret = name: file: {
-    age.secrets.${name} =
-      {
-        # whether secrets are linked to age.secrets.<name>.path
-        symlink = true;
-        # target path for decrypted file
-        # path =
-        # encrypted file path
-        file = "${my-secrets}/${name}.age";
-      }
-      // userReadable;
+    age.secrets.${name} = {
+      file = "${my-secrets}/${name}.age";
+      mode = "0400";
+      symlink = true;
+    };
 
-    # home.file.${".ssh/" + file}.source = config.age.secrets.${name}.path;
+    # Store only a symlink to the runtime secret, never its decrypted contents.
+    home.file.".ssh/${file}".source =
+      config.lib.file.mkOutOfStoreSymlink config.age.secrets.${name}.path;
   };
-
-  updateSymLink = from: to: ''
-    echo "${from} -> ${to}"
-    if [ ! -L "${to}" ] || [ "$(readlink ${to})" != "${from}" ]; then
-        run ln -sib $VERBOSE_ARG ${from} ${to}
-    fi
-  '';
 in {
   # agenix module
   imports = [
-    # agenix.darwinModules.default
     agenix.homeManagerModules.default
     # SSH config file for bastions and servers
     (mkSshSecret "ssh_config_work" "config.d/ssh_config_work")
@@ -46,15 +31,10 @@ in {
     (mkSshSecret "id_ed25519_em" "id_ed25519_em")
   ];
 
-  # home.packages = [agenix.packages.${system}.default]; installed system wide
-
-  # age.identityPaths = [];
-
-  # See [HM: default age.secrets.<name>.path isn’t a path](https://github.com/ryantm/agenix/issues/300)
-  # default is `$(getconf DARWIN_USER_TEMP_DIR)`, so it benefits from auto-cleanup when the system reboot
+  # Keep a stable symlink address; plaintext stays in agenix's default runtime mountpoint.
   age.secretsDir = "${config.home.homeDirectory}/.agenix";
 
-  launchd.agents.activate-agenix = {
+  launchd.agents.activate-agenix = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
     config = {
       KeepAlive = {
         # https://github.com/ryantm/agenix/issues/308
@@ -63,10 +43,11 @@ in {
     };
   };
 
-  home.activation.symlinkAgenix = lib.hm.dag.entryAfter ["writeBoundary"] (lib.strings.concatLines [
-    "mkdir -p ${userSshDir}/config.d"
-    (updateSymLink config.age.secrets.ssh_config_work.path "${userSshDir}/config.d/ssh_config_work")
-    (updateSymLink config.age.secrets.id_rsa_em.path "${userSshDir}/id_rsa_em")
-    (updateSymLink config.age.secrets.id_ed25519_em.path "${userSshDir}/id_ed25519_em")
-  ]);
+  # Create new SSH directories privately; leave permissions of existing directories alone.
+  home.activation.prepareSshSecretDirs = lib.hm.dag.entryBetween ["linkGeneration"] ["writeBoundary"] ''
+    (
+      umask 077
+      run mkdir -p -- ${lib.escapeShellArg "${userSshDir}/config.d"}
+    )
+  '';
 }
