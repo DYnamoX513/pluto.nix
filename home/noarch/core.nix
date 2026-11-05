@@ -34,9 +34,10 @@
     # changes in each release.
     stateVersion = "24.11";
 
+    # Tools for maintaining this configuration, independent of optional CLI modules.
     packages = with pkgs; [
-      # nil # LSP. install it through mason
-      nixd # LSP
+      nil # Nix language server
+      nixd # Nix language server with module option completion
       statix # Lints and suggestions for the nix programming language
       deadnix # Find and remove unused code in .nix source files
       alejandra # Nix Code Formatter
