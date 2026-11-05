@@ -101,6 +101,16 @@ independent VM. Its configuration lives in `hosts/Pluto-M3-Max/Hydra-Orbiting`:
 The former `incus.nix` contained only hostname configuration, which is now managed
 in `configuration.nix`.
 
+## Validation without activation
+
+Run from the repository root:
+
+```bash
+just fmt-check # check Nix formatting without modifying files
+just eval-all  # evaluate every exported Darwin and NixOS system derivation
+just check     # formatting first, then all-host evaluation
+```
+
 ## Live configuration paths
 
 Neovim, Helix, and WezTerm Lua modules use live out-of-store symlinks under

@@ -12,6 +12,7 @@
 - Run rebuild recipes from the repository root. `just show-env` displays the ignored `.justenv`; `_HOSTNAME_JUST_` selects the flake target. `just detect-env` overwrites it with the local hostname, which must match an exported target.
 - `just build` builds without activation using the platform's rebuild tool; `just nh-build` is the alternative. No test suite, CI workflow, or flake `checks` output is defined.
 - `just fmt` formats the whole repository with Alejandra. For focused formatting, use `alejandra path/to/file.nix`.
+- `just check` runs `just fmt-check` followed by `just eval-all`, without needing `_HOSTNAME_JUST_`. Formatting covers `flake.nix`, `home`, `modules`, and `hosts`, excluding `share/nvim`; evaluation automatically covers all exported Darwin/NixOS system derivations, not development shells or live config contents.
 - `just darwin`, `just nixos`, and `just nh-switch` activate system changes; do not use them merely to validate. `just install` bootstraps Darwin and also activates.
 - `just upp <input>` updates one locked input; `just up` updates all inputs.
 

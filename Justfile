@@ -182,6 +182,23 @@ gc older-than="7d":
 fmt:
     nix fmt {{ justfile_directory() }}
 
+# Check Nix formatting without modifying files or entering the Neovim submodule
+[group('validation')]
+fmt-check:
+    nix fmt --no-update-lock-file -- --check flake.nix home modules hosts
+
+# Evaluate every exported system target without building or activating systems
+[group('validation')]
+eval-all:
+    nix eval --no-update-lock-file --json .#darwinConfigurations \
+      --apply 'builtins.mapAttrs (_: host: host.system.drvPath)'
+    nix eval --no-update-lock-file --json .#nixosConfigurations \
+      --apply 'builtins.mapAttrs (_: host: host.config.system.build.toplevel.drvPath)'
+
+# Check formatting, then evaluate all hosts; independent of _HOSTNAME_JUST_
+[group('validation')]
+check: fmt-check eval-all
+
 # Show all the auto gc roots in the nix store
 [group('nix')]
 gcroot:
