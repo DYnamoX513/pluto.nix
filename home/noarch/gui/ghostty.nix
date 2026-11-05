@@ -24,7 +24,7 @@ let
     window-padding-balance = "true";
     # Note that shell integration will automatically set the cursor to a bar at a prompt, regardless of this configuration.
     # You can disable that behavior by specifying shell-integration-features = no-cursor or disabling shell integration entirely.
-    shell-integration-features = "no-cursor,";
+    shell-integration-features = "no-cursor,ssh-terminfo,ssh-env";
   };
 
   # Ghostty theme files ported from the Palebloom JetBrains IDE theme
