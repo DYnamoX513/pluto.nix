@@ -92,6 +92,11 @@ can remove rollback targets.
   changes to live dotfiles. Do not bump `stateVersion` merely to update dependencies.
 - **Legacy development:** run `nix develop ~/pluto.nix#gcc7` inside Hydra
   (`aarch64-linux` only). It provides GCC 7, not a complete historical CI environment.
+- **Intel maintenance:** the Intel Mac follows the last supported 26.05 Nix
+  release line, accepting its fixes without following unstable. This is not
+  indefinite security support; Homebrew and live dotfiles remain independent.
+  [Homebrew no longer builds new Intel bottles](https://docs.brew.sh/Support-Tiers#future-macos-support),
+  so choose software sources per package.
 
 <details>
 <summary>Repository location and optional /etc links</summary>

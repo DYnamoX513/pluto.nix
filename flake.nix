@@ -69,6 +69,25 @@
       # inputs.darwin.follows = "";
     };
 
+    # Last Intel Darwin release line: accept 26.05 fixes without following unstable.
+    nixpkgs-intel-mac.url = "github:nixos/nixpkgs/nixos-26.05";
+    nix-darwin-intel-mac = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+      inputs.nixpkgs.follows = "nixpkgs-intel-mac";
+    };
+    home-manager-intel-mac = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs-intel-mac";
+    };
+    agenix-intel-mac = {
+      # agenix has no matching release line; retain the currently verified revision.
+      url = "github:ryantm/agenix/b027ee29d959fda4b60b57566d64c98a202e0feb";
+      inputs.nixpkgs.follows = "nixpkgs-intel-mac";
+      inputs.home-manager.follows = "home-manager-intel-mac";
+      inputs.darwin.follows = "nix-darwin-intel-mac";
+      inputs.systems.url = "github:nix-systems/default/da67096a3b9bf56a91d16901293e51ba5b49a27e";
+    };
+
     # my private secrets, it's a private repository, you need to replace it with your own.
     # use SSH to authenticate via ssh-agent/ssh-key
     my-secrets = {
@@ -87,8 +106,6 @@
     self,
     nixpkgs,
     nixpkgs-stable-24_11,
-    nix-darwin,
-    home-manager,
     ...
   }: let
     # Supported systems for your flake packages, shell, etc.
@@ -116,6 +133,7 @@
     commonConfig = {
       libFunction,
       homeManagerModule,
+      input-overrides ? {},
     }: {
       system,
       hostname,
@@ -126,6 +144,7 @@
     }: let
       specialArgsEx =
         specialArgs
+        // input-overrides
         // {
           inherit hostname system;
         }
@@ -164,19 +183,29 @@
           );
       };
 
-    mkDarwinConfig = commonConfig {
-      libFunction = nix-darwin.lib.darwinSystem;
-      homeManagerModule = home-manager.darwinModules.home-manager;
-    };
+    mkDarwinConfig = {input-overrides ? {}, ...} @ args: let
+      hostInputs = inputs // input-overrides;
+    in
+      commonConfig {
+        libFunction = hostInputs.nix-darwin.lib.darwinSystem;
+        homeManagerModule = hostInputs.home-manager.darwinModules.home-manager;
+        inherit input-overrides;
+      }
+      (removeAttrs args ["input-overrides"]);
 
-    mkNixosConfig = commonConfig {
-      libFunction = nixpkgs.lib.nixosSystem;
-      homeManagerModule = home-manager.nixosModules.home-manager;
-    };
+    mkNixosConfig = {input-overrides ? {}, ...} @ args: let
+      hostInputs = inputs // input-overrides;
+    in
+      commonConfig {
+        libFunction = hostInputs.nixpkgs.lib.nixosSystem;
+        homeManagerModule = hostInputs.home-manager.nixosModules.home-manager;
+        inherit input-overrides;
+      }
+      (removeAttrs args ["input-overrides"]);
 
     # scan for all directories and files end with .nix but not default.nix
     scanPaths = path:
-      builtins.map
+      map
       (f: (path + "/${f}"))
       (builtins.attrNames
         (nixpkgs.lib.attrsets.filterAttrs
@@ -216,6 +245,12 @@
 
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    formatter = forAllSystems (system: let
+      source =
+        if system == "x86_64-darwin"
+        then inputs.nixpkgs-intel-mac
+        else nixpkgs;
+    in
+      source.legacyPackages.${system}.alejandra);
   };
 }

@@ -1,4 +1,11 @@
-{mkDarwinConfig, ...}:
+{
+  mkDarwinConfig,
+  nixpkgs-intel-mac,
+  nix-darwin-intel-mac,
+  home-manager-intel-mac,
+  agenix-intel-mac,
+  ...
+}:
 #############################################################
 #
 #  Pluto - MacBook Pro 15-inch, 2018
@@ -48,5 +55,14 @@ let
     };
   };
 in {
-  darwinConfiguration.${hostname} = mkDarwinConfig (modules // {inherit system hostname;});
+  darwinConfiguration.${hostname} = mkDarwinConfig (modules
+    // {
+      inherit system hostname;
+      input-overrides = {
+        nixpkgs = nixpkgs-intel-mac;
+        nix-darwin = nix-darwin-intel-mac;
+        home-manager = home-manager-intel-mac;
+        agenix = agenix-intel-mac;
+      };
+    });
 }

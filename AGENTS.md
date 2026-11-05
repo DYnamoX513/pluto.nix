@@ -6,6 +6,7 @@
 - Darwin targets: `Pluto-M3-Max` (`aarch64-darwin`) and `Pluto-i7-8750H` (`x86_64-darwin`). NixOS target: `Hydra-Orbiting` (`aarch64-linux`), exported by `hosts/Pluto-M3-Max/default.nix`.
 - `scanPaths` automatically imports immediate directories and `.nix` files except `default.nix`; adding files to scanned module directories activates them.
 - Home modules are selected in `home/collect-home-modules.nix`. Hydra disables GUI and secrets and imports only `modules/linux/environment.nix`, not all of `modules/linux`.
+- Intel Mac uses the last supported 26.05 release branches through `nixpkgs-intel-mac`, `nix-darwin-intel-mac`, and `home-manager-intel-mac`; `agenix-intel-mac` and its systems input remain commit-pinned.
 
 ## Commands
 
@@ -33,3 +34,4 @@
 - `hosts/Pluto-M3-Max/Hydra-Orbiting/orbstack.nix` is a vendored snapshot of OrbStack-generated integration, not automatically synchronized with OrbStack updates. Keep local customizations in `configuration.nix`; hostname is managed there, without a separate `incus.nix`. Snapshot provenance and refresh guidance are in README.
 - Hydra's `/etc/nixos` currently points to `/home/pluto/pluto.nix`. External writes through that path can reach the checkout; inspect Git changes after OrbStack updates. Do not change the guest directory layout or regenerate files into the checkout merely to validate a change.
 - State versions are compatibility settings, not dependency versions: Darwin `6`, Home Manager/NixOS `24.11`. Do not bump them as part of an input update.
+- Intel updates may advance within the 26.05 release branches, not to newer release lines. This is time-limited maintenance, not indefinite security support.
