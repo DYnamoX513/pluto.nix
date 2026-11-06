@@ -37,6 +37,8 @@
     dhcpcd.enable = false;
     useDHCP = false;
     useHostResolvConf = false;
+    # OrbStack supplies /etc/resolv.conf through the integration snapshot.
+    resolvconf.enable = false;
   };
 
   systemd.network = {

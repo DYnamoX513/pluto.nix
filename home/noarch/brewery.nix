@@ -10,7 +10,7 @@ with lib; let
 in {
   options.brewery = {
     enable = mkOption {
-      default = pkgs.stdenv.isDarwin;
+      default = pkgs.stdenv.hostPlatform.isDarwin;
       type = types.bool;
       description = ''
         When enabled, modules can query the declared Homebrew formulae and casks
@@ -40,7 +40,7 @@ in {
     };
   };
 
-  config.brewery.rules = lib.mkIf (pkgs.stdenv.isDarwin && cfg.enable) {
+  config.brewery.rules = lib.mkIf (pkgs.stdenv.hostPlatform.isDarwin && cfg.enable) {
     brewList = builtins.map (brew: brew.name or brew) osConfig.homebrew.brews;
     caskList = builtins.map (cask: cask.name or cask) osConfig.homebrew.casks;
   };

@@ -30,10 +30,10 @@
         selectedLineBgColor = [
           "reverse"
         ];
-      };
-      authorColors = {
-        # "Yuxin Duan" = "#30A0A0";
-        ${userfullname} = "#30A0A0";
+        authorColors = {
+          # "Yuxin Duan" = "#30A0A0";
+          ${userfullname} = "#30A0A0";
+        };
       };
     };
     confirmOnQuit = true;

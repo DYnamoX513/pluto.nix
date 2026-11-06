@@ -65,8 +65,6 @@
       url = "github:ryantm/agenix";
       # url = "github:yaxitech/ragenix"; # Rust-agenix
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-      # inputs.darwin.follows = "";
     };
 
     # Last Intel Darwin release line: accept 26.05 fixes without following unstable.
